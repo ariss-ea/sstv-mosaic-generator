@@ -1,0 +1,692 @@
+<style>
+  :root {
+    --primary:#0F6CAF;
+    --primary-hover:#0c568a;
+    --secondary:#6c757d;
+    --secondary-hover:#5a6268;
+    --info:#17a2b8;
+    --info-hover:#138496;
+    --danger:#dc3545;
+    --danger-hover:#c82333;
+    --radius:16px;
+    --btn-radius:5px;
+  }
+
+  /* ===== LAYOUT ===== */
+  #ariss-sstv-mosaic{
+    font-family:'Inter',Arial,Helvetica,sans-serif;
+    margin:0;
+    padding:0;
+    width:100%;
+    background: #f9f9f9;;
+    display:flex;
+    justify-content:center;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+
+  #container{
+    max-width:1200px;
+    width:100%;
+    padding:20px;
+    text-align:center;
+    font-family:'Inter',Arial,Helvetica,sans-serif;
+    margin:0 auto;
+    box-sizing:border-box;
+  }
+
+  /* ===== TITLES ===== */
+  h1,h2{margin:10px 0;color:#333;text-shadow:1px 1px 3px rgba(0,0,0,.1);font-family:'Inter',Arial,Helvetica,sans-serif;}
+  .subtitle-small{
+    font-size:18px;
+    color:#0F6CAF;
+    font-weight:500;
+    margin-bottom:2px;
+    letter-spacing:1px;
+    font-family:'Inter',Arial,Helvetica,sans-serif;
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn{
+    padding:10px 20px;
+    font-size:16px;
+    border:none;
+    color:#fff;
+    cursor:pointer;
+    border-radius:var(--btn-radius);
+    transition:background .2s ease;
+    margin:10px 5px;
+    background:var(--primary);
+    font-family:'Inter',Arial,Helvetica,sans-serif;
+  }
+  .btn-primary{background:var(--primary);}
+  .btn-primary:hover{background:var(--primary-hover);}
+  .btn-secondary{background:var(--secondary);}
+  .btn-secondary:hover{background:var(--secondary-hover);}
+  .btn-info{background:var(--info);}
+  .btn-info:hover{background:var(--info-hover);}
+  .btn-danger{background:var(--danger);}
+  .btn-danger:hover{background:var(--danger-hover);}
+
+  /* ===== FORM FIELDS ===== */
+  .field-group{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:20px 0 10px;}
+  .field-group input[type="text"]{
+    padding:10px 12px;
+    font-size:15px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    background:#fff;
+    flex:1 1 220px;
+    min-width:180px;
+    font-family:'Inter',Arial,Helvetica,sans-serif;
+  }
+  .field-label{font-size:14px;color:#555;display:block;margin-bottom:4px;text-align:center;font-family:'Inter',Arial,Helvetica,sans-serif;}
+
+  /* ===== GRID & CELLS ===== */
+  #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px;margin:20px auto;}
+  @media(min-width:768px){#grid{grid-template-columns:repeat(4,1fr);} }
+  .cell{background:#fff;border:1px solid #ccc;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 5px rgba(0,0,0,.1);transition:transform .2s ease;}
+  .cell:hover{transform:scale(1.02);}
+
+  .image-wrapper{position:relative;width:100%;background:#eaeaea;aspect-ratio:640/496;}
+  .diploma-wrapper{aspect-ratio:1654/2339;}
+
+  @supports not (aspect-ratio: 1/1){
+    .image-wrapper::before,.diploma-wrapper::before{content:"";display:block;padding-top:calc(496/640*100%);}
+    .diploma-wrapper::before{padding-top:calc(2339/1654*100%);}
+  }
+
+  .image-wrapper>*{position:absolute;top:0;left:0;right:0;bottom:0;}
+  .image-wrapper img{width:100%;height:100%;object-fit:cover;display:block;}
+
+  .placeholder {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+    color:#000;
+    font-size:14px;
+    font-family:'Inter',Arial,Helvetica,sans-serif;
+  }
+
+  .upload-input{cursor:pointer;opacity:0;}
+
+  .cell-footer{padding:5px;background:#f0f0f0;border-top:1px solid #ccc;display:flex;justify-content:center;align-items:center;font-size:14px;gap:10px;font-family:'Inter',Arial,Helvetica,sans-serif;}
+  .remove-btn{display:none;}
+
+  /* WATERMARK */
+  #site-link{display:inline-block;margin-top:30px;font-size:14px;color:#007acc;text-decoration:none;} #site-link:hover{text-decoration:underline;}
+  .license-text{margin-top:20px;font-size:12px;color:#666;}
+
+  /* MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,.5);
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    padding-top: 20px;
+  }
+  .modal-content {
+    background: #fff;
+    padding: 20px;
+    max-width: 650px;
+    width: 92%;
+    margin: auto;
+    border-radius: var(--radius);
+    position: relative;
+    text-align: left;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  /* Help modal header layout */
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .modal-header h3 {
+    margin: 0;
+    font-size: 1.5em;
+  }
+  .modal-close {
+    font-size: 1.5em;
+    cursor: pointer;
+  }
+
+  @media(max-width:600px){
+    .modal-content {
+      width: 95%;
+      padding: 15px;
+    }
+  }
+
+  /* ===== BACKGROUNDS UI ===== */
+  #background-section {
+    margin:20px auto;
+    max-width:1000px;
+    font-family:'Inter',Arial,Helvetica,sans-serif;
+  }
+  .section-title {
+    font-size:28px;
+    color:#333;
+    margin-bottom:20px;
+  }
+  .background-options {
+    display:flex;
+    gap:15px;
+    justify-content:center;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:visible;
+    padding-top:10px;
+    padding-bottom:10px;
+  }
+  .bg-option {
+    position:relative;
+    cursor:pointer;
+    border:2px solid transparent;
+    border-radius:8px;
+    overflow:hidden;
+    width:220px;
+    text-align:center;
+    background:#fff;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+    transition:border .2s, transform .2s;
+  }
+  .bg-option:hover { transform:translateY(-3px); }
+  .bg-option.selected { border-color:var(--primary); }
+  .bg-option img,
+  .bg-option .color-preview {
+    width:100%;
+    height:auto;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    display:block;
+  }
+  .color-preview.white-bg {
+    background:#fff;
+    border:1px solid #ccc;
+  }
+  .color-preview.black-bg {
+    background:#000;
+    border:1px solid #ccc;
+  }
+  .bg-option[data-type="upload"] img.upload-icon {
+    object-fit:contain;
+    padding:20px;
+    filter:contrast(1.2);
+    background:#fafafa;
+  }
+  .bg-option .bg-upload-input {
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    opacity:0;
+    cursor:pointer;
+  }
+  @media(min-width:1024px) {
+    .bg-option { width:260px; }
+  }
+  @media(max-width:768px) {
+    .bg-option { width:180px; }
+  }
+  @media(max-width:600px) {
+    .background-options { flex-wrap:wrap; }
+    .bg-option { width:100%; }
+  }
+
+  /* no change to other CSS */
+</style>
+
+<div id="ariss-sstv-mosaic">
+  <div id="container">
+    <!-- Centered header and help -->
+    <div style="text-align:center;">
+      <div class="subtitle-small">SSTV MOSAIC GENERATOR</div>
+      <h1 id="main-title">ARISS SSTV Series 28</h1>
+      <h2 id="subtitle">Apollo Soyuz and STS-51F</h2>
+      <button id="howto-btn" class="btn btn-info" style="margin-top:10px;background:#0F6CAF;">Help</button>
+    </div>
+
+    <!-- Personal info fields -->
+    <div class="field-group" id="user-fields">
+      <div style="flex:1 1 220px;min-width:180px;">
+        <label class="field-label" for="name-input">Name&nbsp;(required)</label>
+        <input type="text" id="name-input" placeholder="Your name" required />
+      </div>
+      <div style="flex:1 1 220px;min-width:180px;">
+        <label class="field-label" for="callsign-input">Callsign&nbsp;(optional)</label>
+        <input type="text" id="callsign-input" placeholder="Callsign (e.g. EA1ABC)" />
+      </div>
+      <div style="flex:1 1 220px;min-width:180px;">
+        <label class="field-label" for="locator-input">Grid Square&nbsp;(required)</label>
+        <input type="text" id="locator-input" placeholder="Locator (e.g. IM88sq)" required />
+      </div>
+    </div>
+
+    <!-- Image grid -->
+    <div id="grid"></div>
+
+    <!-- Diploma clickable slot  -->
+    <div id="diploma-cell" class="cell" style="max-width:200px;margin:20px auto 10px;">
+      <div class="image-wrapper diploma-wrapper">
+        <div class="placeholder">Click to add Diploma</div>
+        <input type="file" accept="image/*" id="diploma-input" class="upload-input" />
+      </div>
+      <div class="cell-footer">
+        <span>Diploma <span style="color:#888;font-size:13px;">(optional)</span></span>
+        <button id="diploma-remove" class="btn btn-danger remove-btn" style="padding:4px 8px;">Remove</button>
+      </div>
+    </div> <!-- end of diploma-cell -->
+
+    <!-- Background section -->
+    <div id="background-section">
+      <h2 class="section-title">Background</h2>
+      <div class="background-options">
+        <div class="bg-option selected" data-type="iss">
+          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/background_iss.jpg"
+               alt="International Space Station" />
+          <span>International Space Station</span>
+        </div>
+        <div class="bg-option" data-type="antenna">
+          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/background_ariss_colombus_module.jpg"
+               alt="ARISS Antenna on Columbus Module" />
+          <span>ARISS Antenna on Columbus Module</span>
+        </div>
+        <div class="bg-option" data-type="pillars">
+          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/background_pillars_of_creation.jpg"
+               alt="Pillars Of Creation (JWST)" />
+          <span>Pillars Of Creation (JWST)</span>
+        </div>
+        <div class="bg-option" data-type="white">
+          <div class="color-preview white-bg"></div>
+          <span>High Contrast (White)</span>
+        </div>
+        <div class="bg-option" data-type="black">
+          <div class="color-preview black-bg"></div>
+          <span>High Contrast (Black)</span>
+        </div>
+        <div class="bg-option" data-type="upload">
+          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/upload_icon.png"
+               alt="Upload Your Own" class="upload-icon" />
+          <span>Upload your own</span>
+          <input type="file" id="bg-upload-input" class="bg-upload-input" accept="image/*" />
+        </div>
+      </div>
+    </div>
+    <!-- Reminder text above Save button -->
+    <div class="reminder-text">
+      Don't forget to submit your pictures to the
+      <a href="https://ariss-usa.org/ARISS_SSTV/" target="_blank">ARISS SSTV Gallery</a>
+      and request a certificate.
+    </div>
+
+    <button id="save-btn" class="btn btn-primary">Save Mosaic as JPG</button>
+
+    <hr>
+
+    <span style="display:inline-block;width:40px;"></span>
+
+    <!-- Footer links removed: source-link button and reminder removed -->
+
+    <div>
+      <a id="site-link" href="http://ariss-ea.org/sstv-mosaic" target="_blank">ariss-ea.org/sstv-mosaic</a>
+    </div>
+    <div class="license-text">An <strong>ARISS-EA Open Source</strong> Initiative | <a href="https://github.com/ariss-ea/sstv-mosaic-generator" target="_blank">View Source</a></div>
+    <div class="license-text">Version <strong>0.2.2</strong> - 04/08/2025</div>
+    <canvas id="canvas" style="display:none;"></canvas>
+  </div>
+
+  <!-- Help modal -->
+  <div id="help-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>How to Use</h3>
+        <span class="modal-close" id="help-close">&times;</span>
+      </div>
+      <ol>
+        <li>Enter <strong>Name</strong> and <strong>Grid Square</strong> (Callsign optional).</li>
+        <li>Click any <em>No image</em> slot to upload up to 12 SSTV frames (640×496 or matching aspect-ratio). Use the red <em>Remove</em> button to clear a slot.</li>
+        <li>Upload the official <strong>Diploma</strong> (optional). Use the red <em>Remove</em> button to clear it.</li>
+        <li>In the <strong>Background</strong> section, choose one of:
+          <ul>
+            <li>International Space Station</li>
+            <li>ARISS Antenna on Columbus Module</li>
+            <li>Pillars Of Creation (JWST)</li>
+            <li>High Contrast (White)</li>
+            <li>High Contrast (Black)</li>
+            <li>Upload your own (custom uploads get a semi-transparent overlay for text readability)</li>
+          </ul>
+        </li>
+        <li>Click <strong>Save Mosaic as JPG</strong>. The downloaded image includes:
+          <ul>
+            <li>ISS Expedition logo at top-left</li>
+            <li>Title and subtitle</li>
+            <li>Your personal info with high contrast</li>
+            <li>4×3 image grid with slot numbers</li>
+            <li>Optional diploma on the right</li>
+            <li>Selected background</li>
+          </ul>
+        </li>
+        <li>Download and share your SSTV mosaic!</li>
+      </ol>
+      <p>Need support or want to give feedback? Visit <a href="https://ariss-ea.org/" target="_blank">ariss-ea.org</a>.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Initialize grid & storage
+  const gridContainer=document.getElementById('grid');
+  const TOTAL_SLOTS=12;
+  const imagesArray=new Array(TOTAL_SLOTS).fill(null);
+
+  // Create 12 cells
+  for(let i=0;i<TOTAL_SLOTS;i++){
+    const cell=document.createElement('div');
+    cell.className='cell';
+    cell.dataset.index=i;
+    cell.innerHTML=`
+      <div class="image-wrapper">
+        <div class="placeholder">No image</div>
+        <input type="file" accept="image/*" class="upload-input" />
+      </div>
+      <div class="cell-footer">
+        <span class="cell-number">${i+1}/${TOTAL_SLOTS}</span>
+        <button class="btn btn-danger remove-btn" style="padding:4px 8px;">Remove</button>
+      </div>
+    `;
+    gridContainer.appendChild(cell);
+  }
+
+  // Generic file handler
+  function handleFileSelect(inputEl,onLoad){
+    const file=inputEl.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>onLoad(img);
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Update a single cell display
+  function updateCellDisplay(cell,idx){
+    const wrapper=cell.querySelector('.image-wrapper');
+    wrapper.innerHTML='';
+    const fileInput=document.createElement('input');
+    fileInput.type='file';
+    fileInput.accept='image/*';
+    fileInput.className='upload-input';
+    fileInput.addEventListener('change',()=>{
+      handleFileSelect(fileInput,img=>{
+        imagesArray[idx]=img;
+        updateCellDisplay(cell,idx);
+        cell.querySelector('.remove-btn').style.display='inline-block';
+      });
+    });
+    wrapper.appendChild(fileInput);
+
+    if(imagesArray[idx]){
+      const imgEl=new Image();
+      imgEl.src=imagesArray[idx].src;
+      wrapper.insertBefore(imgEl,fileInput);
+    }else{
+      const placeholder=document.createElement('div');
+      placeholder.className='placeholder';
+      placeholder.textContent='No image';
+      wrapper.insertBefore(placeholder,fileInput);
+      cell.querySelector('.remove-btn').style.display='none';
+    }
+  }
+
+  // Attach handlers to image slots
+  document.querySelectorAll('#grid .upload-input').forEach((inp,i)=>{
+    inp.addEventListener('change',()=>{
+      handleFileSelect(inp,img=>{
+        imagesArray[i]=img;
+        const cell=inp.closest('.cell');
+        updateCellDisplay(cell,i);
+        cell.querySelector('.remove-btn').style.display='inline-block';
+      });
+    });
+  });
+
+  document.querySelectorAll('#grid .remove-btn').forEach((btn,i)=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      imagesArray[i]=null;
+      const cell=btn.closest('.cell');
+      updateCellDisplay(cell,i);
+    });
+  });
+
+  // Diploma slot handling
+  let diplomaImg=null;
+  const diplomaWrapper=document.querySelector('#diploma-cell .image-wrapper');
+  const diplomaInput=document.getElementById('diploma-input');
+  const diplomaRemove=document.getElementById('diploma-remove');
+
+  function refreshDiploma(){
+    diplomaWrapper.innerHTML='';
+    diplomaWrapper.appendChild(diplomaInput);
+    if(diplomaImg){
+      const imgEl=new Image();
+      imgEl.src=diplomaImg.src;
+      diplomaWrapper.insertBefore(imgEl,diplomaInput);
+      diplomaRemove.style.display='inline-block';
+    }else{
+      const pl=document.createElement('div');
+      pl.className='placeholder';
+      pl.textContent='Click to add Diploma';
+      diplomaWrapper.insertBefore(pl,diplomaInput);
+      diplomaRemove.style.display='none';
+    }
+  }
+
+  diplomaInput.addEventListener('change',()=>{
+    handleFileSelect(diplomaInput,img=>{
+      diplomaImg=img;
+      refreshDiploma();
+    });
+  });
+  diplomaRemove.addEventListener('click',e=>{
+    e.stopPropagation();
+    diplomaImg=null;
+    diplomaInput.value='';
+    refreshDiploma();
+  });
+  refreshDiploma();
+
+  // Preload default backgrounds
+  const defaultBgUrls = {
+    iss: 'https://ariss-ea.org/wp-content/uploads/2025/07/background_iss.jpg',
+    antenna: 'https://ariss-ea.org/wp-content/uploads/2025/07/background_ariss_colombus_module.jpg',
+    pillars: 'https://ariss-ea.org/wp-content/uploads/2025/07/background_pillars_of_creation.jpg'
+  };
+  const defaultBgImgs = {};
+  Object.entries(defaultBgUrls).forEach(([type, url]) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = url;
+    defaultBgImgs[type] = img;
+  });
+
+  // Preload ISS Expedition logo
+  const expeditionLogo = new Image();
+  expeditionLogo.crossOrigin = 'anonymous';
+  expeditionLogo.src = 'https://ariss-ea.org/wp-content/uploads/2025/07/expedition_73.png';
+
+  // Background selection logic
+  const bgOptions = document.querySelectorAll('.bg-option');
+  let selectedBg = { type:'iss', img:null };
+  bgOptions.forEach(opt => {
+    const type = opt.dataset.type;
+    opt.addEventListener('click', () => {
+      if (type === 'upload') return;
+      bgOptions.forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      selectedBg = { type, img: null };
+    });
+  });
+
+  // Upload your own background + preview replace
+  const bgUploadInput = document.getElementById('bg-upload-input');
+  bgUploadInput.addEventListener('change', () => {
+    const file = bgUploadInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        selectedBg = { type:'upload', img };
+        bgOptions.forEach(o => o.classList.remove('selected'));
+        const uploadOpt = document.querySelector('.bg-option[data-type="upload"]');
+        uploadOpt.classList.add('selected');
+        // replace preview icon with the uploaded image
+        const previewImg = uploadOpt.querySelector('img.upload-icon');
+        previewImg.src = img.src;
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Save mosaic with canvas
+  document.getElementById('save-btn').addEventListener('click', () => {
+    // Validate inputs
+    const name = document.getElementById('name-input').value.trim();
+    const locator = document.getElementById('locator-input').value.trim();
+    if (!name || !locator) {
+      alert('Please fill in Name and Grid Square before saving.');
+      return;
+    }
+    const callsign = document.getElementById('callsign-input').value.trim();
+
+    // Layout constants
+    const cellW=640, cellH=496, footerH=30, cols=4, rows=3;
+    const titleSize=72, subtitleSize=48, infoSize=42, pad=20, between=10;
+    const infoLines=[ name + (callsign?` (${callsign})`:''), locator ];
+    const infoHeight=infoLines.length*infoSize + (infoLines.length-1)*4;
+    const titleY=pad+titleSize;
+    const subtitleY=titleY+between+subtitleSize;
+    const infoStartY=subtitleY+between;
+    const gridStartY=infoStartY+infoHeight+pad;
+    const gridH=(cellH+footerH)*rows;
+    let dipW=0, dipH=0, gap=0;
+    if (diplomaImg) {
+      const scale = gridH / diplomaImg.height;
+      dipW = diplomaImg.width*scale;
+      dipH = gridH;
+      gap = 40;
+    }
+    const canvasW = cellW*cols + dipW + gap;
+    const canvasH = gridStartY + gridH;
+    const canvas = document.getElementById('canvas');
+    canvas.width = canvasW;
+    canvas.height = canvasH;
+    const ctx = canvas.getContext('2d');
+
+    // Draw background
+    if (selectedBg.type === 'white') {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0,0,canvasW,canvasH);
+    } else if (selectedBg.type === 'black') {
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0,0,canvasW,canvasH);
+    } else {
+      const bgImg = selectedBg.type === 'upload'
+                  ? selectedBg.img
+                  : defaultBgImgs[selectedBg.type];
+      const scale = Math.max(canvasW/bgImg.width, canvasH/bgImg.height);
+      const bw = bgImg.width*scale, bh = bgImg.height*scale;
+      const bx = (canvasW - bw)/2, by = (canvasH - bh)/2;
+      ctx.drawImage(bgImg, bx, by, bw, bh);
+      if (selectedBg.type === 'upload') {
+        ctx.fillStyle='rgba(0,0,0,0.3)';
+        ctx.fillRect(0,0,canvasW,canvasH);
+      }
+    }
+
+    // Draw ISS Expedition logo top-left (larger, no border/background)
+    if (expeditionLogo.complete) {
+      const logoMargin = 20;
+      const logoWidth = 200;  // increased from 120
+      const logoHeight = expeditionLogo.height * (logoWidth / expeditionLogo.width);
+      ctx.drawImage(expeditionLogo, logoMargin, logoMargin, logoWidth, logoHeight);
+    }
+
+    // Watermark
+    ctx.font = '50px Inter';
+    ctx.fillStyle = (selectedBg.type==='white'?'rgba(0,0,0,0.3)':'rgba(255,255,255,0.7)');
+    ctx.textAlign = 'right';
+    ctx.fillText('ariss-ea.org/sstv-mosaic', canvasW-10,60);
+
+    // Title & subtitle
+    ctx.textAlign = 'center';
+    ctx.font = `bold ${titleSize}px Inter`;
+    ctx.fillStyle = (selectedBg.type==='white'?'#000':'#fff');
+    ctx.fillText(document.getElementById('main-title').textContent, canvasW/2, titleY);
+    ctx.font = `${subtitleSize}px Inter`;
+    ctx.fillText(document.getElementById('subtitle').textContent, canvasW/2, subtitleY);
+
+    // Personal info (black on white bg, white otherwise)
+    ctx.font = `bold ${infoSize}px Inter`;
+    ctx.fillStyle = (selectedBg.type==='white'?'#000':'#fff');
+    let curY = infoStartY;
+    infoLines.forEach(line=>{
+      ctx.fillText(line, canvasW/2, curY+infoSize);
+      curY += infoSize+4;
+    });
+
+    // Draw grid & placeholders
+    for(let i=0;i<TOTAL_SLOTS;i++){
+      const col = i%cols, row = Math.floor(i/cols);
+      const x = col*cellW, y = gridStartY + row*(cellH+footerH);
+      ctx.strokeStyle='#ccc';
+      ctx.strokeRect(x,y,cellW,cellH);
+
+      if (imagesArray[i]) {
+        ctx.drawImage(imagesArray[i], x, y, cellW, cellH);
+      } else {
+        ctx.fillStyle='rgba(255,255,255,0.5)';
+        ctx.fillRect(x, y, cellW, cellH);
+        ctx.fillStyle='#000';
+        ctx.font='bold 36px Inter';
+        ctx.textAlign='center';
+        ctx.fillText('No image', x+cellW/2, y+cellH/2);
+      }
+      // slot numbers bold & dynamic color
+      ctx.fillStyle = (selectedBg.type==='white'?'#000':'#fff');
+      ctx.font='bold 30px Inter';
+      ctx.fillText(`${i+1}/${TOTAL_SLOTS}`, x+cellW/2, y+cellH+footerH/2+10);
+    }
+
+    // Draw diploma if present
+    if (diplomaImg) {
+      ctx.drawImage(diplomaImg, cellW*cols+gap, gridStartY, dipW, dipH);
+    }
+
+    // Export JPG
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/jpeg',1.0);
+    link.download = 'sstv_mosaic.jpg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  // Help modal behavior
+  const helpModal=document.getElementById('help-modal');
+  document.getElementById('howto-btn').addEventListener('click',()=>helpModal.style.display='flex');
+  document.getElementById('help-close').addEventListener('click',()=>helpModal.style.display='none');
+  window.addEventListener('click', e => { if (e.target === helpModal) helpModal.style.display = 'none'; });
+</script>
