@@ -1,306 +1,634 @@
+<!-- === ARISS SSTV MOSAIC GENERATOR v2.1 (all CSS scoped to #ariss-sstv-mosaic) === -->
 <style>
-  :root {
-    --primary:#0F6CAF;
-    --primary-hover:#0c568a;
-    --secondary:#6c757d;
-    --secondary-hover:#5a6268;
-    --info:#17a2b8;
-    --info-hover:#138496;
-    --danger:#dc3545;
-    --danger-hover:#c82333;
-    --radius:16px;
-    --btn-radius:5px;
+  #ariss-sstv-mosaic {
+    --primary: #0F6CAF;
+    --primary-hover: #0c568a;
+    --primary-soft: #eef5fb;
+    --primary-line: #cfe2f1;
+    --secondary: #6c757d;
+    --secondary-hover: #5a6268;
+    --info: #17a2b8;
+    --info-hover: #138496;
+    --danger: #dc3545;
+    --danger-hover: #c82333;
+    --radius: 16px;
+    --btn-radius: 5px;
+    --tile-ratio: 320 / 240;
   }
 
   /* ===== LAYOUT ===== */
-  #ariss-sstv-mosaic{
-    font-family:'Inter',Arial,Helvetica,sans-serif;
-    margin:0;
-    padding:0;
-    width:100%;
-    background: #f9f9f9;;
-    display:flex;
-    justify-content:center;
+  #ariss-sstv-mosaic {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background: #f9f9f9;
+    display: flex;
+    justify-content: center;
   }
-  *,*::before,*::after{box-sizing:border-box;}
 
-  #container{
-    max-width:1200px;
-    width:100%;
-    padding:20px;
-    text-align:center;
-    font-family:'Inter',Arial,Helvetica,sans-serif;
-    margin:0 auto;
-    box-sizing:border-box;
+  #ariss-sstv-mosaic,
+  #ariss-sstv-mosaic *,
+  #ariss-sstv-mosaic *::before,
+  #ariss-sstv-mosaic *::after {
+    box-sizing: border-box;
+  }
+
+  #ariss-sstv-mosaic #container {
+    max-width: 1200px;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    margin: 0 auto;
   }
 
   /* ===== TITLES ===== */
-  h1,h2{margin:10px 0;color:#333;text-shadow:1px 1px 3px rgba(0,0,0,.1);font-family:'Inter',Arial,Helvetica,sans-serif;}
-  .subtitle-small{
-    font-size:18px;
-    color:#0F6CAF;
-    font-weight:500;
-    margin-bottom:2px;
-    letter-spacing:1px;
-    font-family:'Inter',Arial,Helvetica,sans-serif;
+  #ariss-sstv-mosaic h1,
+  #ariss-sstv-mosaic h2 {
+    margin: 10px 0;
+    color: #333;
+    text-shadow: 1px 1px 3px rgba(0,0,0,.1);
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+  }
+
+  #ariss-sstv-mosaic .subtitle-small {
+    font-size: 18px;
+    color: #0F6CAF;
+    font-weight: 500;
+    margin-bottom: 2px;
+    letter-spacing: 1px;
+  }
+
+  #ariss-sstv-mosaic .mode-info {
+    display: inline-block;
+    margin: 6px 0 0;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  #ariss-sstv-mosaic .mode-info:hover { color: #0F6CAF; text-decoration: underline; }
+
+  /* ===== EVENT BANNER ===== */
+  #ariss-sstv-mosaic .event-banner {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin: 12px auto 0;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    background: var(--primary-soft);
+    border: 1px solid var(--primary-line);
+    color: #0F6CAF;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  #ariss-sstv-mosaic .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex: 0 0 8px;   /* never squash it when the banner text wraps on phones */
+    background: var(--danger);
+    box-shadow: 0 0 0 0 rgba(220,53,69,.6);
+    animation: ariss-pulse 1.6s infinite;
+  }
+  #ariss-sstv-mosaic .live-dot.idle { background: var(--secondary); animation: none; }
+  @keyframes ariss-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220,53,69,.55); }
+    70% { box-shadow: 0 0 0 8px rgba(220,53,69,0); }
+    100% { box-shadow: 0 0 0 0 rgba(220,53,69,0); }
   }
 
   /* ===== BUTTONS ===== */
-  .btn{
-    padding:10px 20px;
-    font-size:16px;
-    border:none;
-    color:#fff;
-    cursor:pointer;
-    border-radius:var(--btn-radius);
-    transition:background .2s ease;
-    margin:10px 5px;
-    background:var(--primary);
-    font-family:'Inter',Arial,Helvetica,sans-serif;
+  #ariss-sstv-mosaic .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: var(--btn-radius);
+    transition: background .2s ease;
+    margin: 10px 5px;
+    background: var(--primary);
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
   }
-  .btn-primary{background:var(--primary);}
-  .btn-primary:hover{background:var(--primary-hover);}
-  .btn-secondary{background:var(--secondary);}
-  .btn-secondary:hover{background:var(--secondary-hover);}
-  .btn-info{background:var(--info);}
-  .btn-info:hover{background:var(--info-hover);}
-  .btn-danger{background:var(--danger);}
-  .btn-danger:hover{background:var(--danger-hover);}
+  #ariss-sstv-mosaic .btn-primary { background: var(--primary); }
+  #ariss-sstv-mosaic .btn-primary:hover { background: var(--primary-hover); }
+  #ariss-sstv-mosaic .btn-secondary { background: var(--secondary); }
+  #ariss-sstv-mosaic .btn-secondary:hover { background: var(--secondary-hover); }
+  #ariss-sstv-mosaic .btn-info { background: var(--info); }
+  #ariss-sstv-mosaic .btn-info:hover { background: var(--info-hover); }
+  #ariss-sstv-mosaic .btn-danger { background: var(--danger); }
+  #ariss-sstv-mosaic .btn-danger:hover { background: var(--danger-hover); }
+  #ariss-sstv-mosaic .btn-ghost { background: #fff; color: #0F6CAF; border: 1px solid var(--primary-line); }
+  #ariss-sstv-mosaic .btn-ghost:hover { background: var(--primary-soft); }
+  #ariss-sstv-mosaic .btn-hero {
+    padding: 16px 40px;
+    font-size: 19px;
+    font-weight: 600;
+    border-radius: 12px;
+    margin-top: 16px;
+    box-shadow: 0 8px 22px rgba(15,108,175,.35);
+    transition: background .2s ease, transform .15s ease, box-shadow .2s ease;
+  }
+  #ariss-sstv-mosaic .btn-hero:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(15,108,175,.42); }
+  #ariss-sstv-mosaic .btn-hero:active { transform: translateY(0); box-shadow: 0 4px 12px rgba(15,108,175,.3); }
+  #ariss-sstv-mosaic .btn-sm { padding: 6px 12px; font-size: 14px; margin: 4px; }
+  #ariss-sstv-mosaic .btn[disabled] { opacity: .6; cursor: wait; }
 
   /* ===== FORM FIELDS ===== */
-  .field-group{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:20px 0 10px;}
-  .field-group input[type="text"]{
-    padding:10px 12px;
-    font-size:15px;
-    border:1px solid #ccc;
-    border-radius:5px;
-    background:#fff;
-    flex:1 1 220px;
-    min-width:180px;
-    font-family:'Inter',Arial,Helvetica,sans-serif;
+  #ariss-sstv-mosaic .field-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0 10px;
   }
-  .field-label{font-size:14px;color:#555;display:block;margin-bottom:4px;text-align:center;font-family:'Inter',Arial,Helvetica,sans-serif;}
+  #ariss-sstv-mosaic .field-group input[type="text"] {
+    padding: 10px 12px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+    min-width: 180px;
+    font-family: inherit;
+  }
+  #ariss-sstv-mosaic .field-label {
+    font-size: 14px;
+    color: #555;
+    display: block;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  /* ===== SEGMENTED SWITCHES ===== */
+  #ariss-sstv-mosaic .mode-switch {
+    display: inline-flex;
+    border: 1px solid #d0d0d0;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin: 6px 0 4px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.4);
+  }
+  #ariss-sstv-mosaic .mode-btn {
+    padding: 8px 16px;
+    background: transparent;
+    border: none;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 400;
+    font-family: inherit;
+  }
+  #ariss-sstv-mosaic .mode-btn.active { background: var(--primary-soft); color: #0F6CAF; }
+
+  #ariss-sstv-mosaic .settings-block { margin: 0 0 18px; }
+  #ariss-sstv-mosaic .settings-block h4 { margin: 0 0 4px; font-size: 15px; color: #333; }
+  #ariss-sstv-mosaic .settings-hint { font-size: 12px; color: #666; margin: 2px 0 0; }
+  #ariss-sstv-mosaic .settings-link {
+    background: none; border: none; padding: 0; color: #007acc; cursor: pointer;
+    font-size: 13px; font-family: inherit;
+  }
+  #ariss-sstv-mosaic .settings-link:hover { text-decoration: underline; }
+
+  /* ===== CARDS ===== */
+  #ariss-sstv-mosaic .card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: 0 2px 14px rgba(0,0,0,.06);
+    border: 1px solid #eee;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1000px;
+    text-align: left;
+  }
+  #ariss-sstv-mosaic .card-title {
+    margin: 0 0 4px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+  }
+  #ariss-sstv-mosaic .card-sub { margin: 0 0 14px; font-size: 14px; color: #666; }
+  #ariss-sstv-mosaic .muted { color: #888; font-size: 13px; }
+
+  /* ===== NOTICE / TOAST ===== */
+  #ariss-sstv-mosaic .notice {
+    display: none;
+    max-width: 800px;
+    margin: 16px auto 0;
+    padding: 10px 16px;
+    background: var(--primary-soft);
+    color: #0F6CAF;
+    border: 1px solid var(--primary-line);
+    border-radius: var(--radius);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  #ariss-sstv-mosaic .notice .btn { padding: 6px 12px; font-size: 14px; margin: 8px 4px 0; }
+
+  #ariss-sstv-mosaic .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translate(-50%, 20px);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10001;
+    background: rgba(30,30,30,.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 9999px;
+    font-size: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    transition: opacity .25s ease, transform .25s ease;
+    max-width: 92vw;
+    text-align: center;
+  }
+  #ariss-sstv-mosaic .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ===== PROGRESS & BADGES ===== */
+  #ariss-sstv-mosaic .progress-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  #ariss-sstv-mosaic .big-count { font-size: 40px; font-weight: 700; color: #333; line-height: 1; }
+  #ariss-sstv-mosaic .big-count small { font-size: 18px; font-weight: 500; color: #888; }
+  #ariss-sstv-mosaic .bar {
+    height: 8px; border-radius: 9999px; background: #eaeaea; overflow: hidden; margin: 14px 0 10px;
+  }
+  #ariss-sstv-mosaic .bar > span {
+    display: block; height: 100%; width: 0; border-radius: 9999px;
+    background: linear-gradient(90deg, var(--primary), var(--info));
+    transition: width .5s cubic-bezier(.2,.8,.2,1);
+  }
+  #ariss-sstv-mosaic .chip {
+    display: inline-block; padding: 2px 10px; margin: 2px; border-radius: 9999px;
+    background: var(--primary-soft); color: #0F6CAF; font-size: 13px;
+  }
+  #ariss-sstv-mosaic .tip { margin: 0 auto; padding: 0 10px; max-width: 1000px; text-align: center; }
+  #ariss-sstv-mosaic .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  @media (max-width: 600px) { #ariss-sstv-mosaic .badges { justify-content: center; } }
+  #ariss-sstv-mosaic .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 9999px;
+    border: 1px solid #e3e3e3; background: #fafafa; color: #999; font-size: 13px;
+    filter: grayscale(1); opacity: .65;
+    transition: all .3s ease;
+  }
+  #ariss-sstv-mosaic .badge.on {
+    color: #0F6CAF; border-color: var(--primary-line); background: var(--primary-soft);
+    filter: none; opacity: 1;
+  }
+  #ariss-sstv-mosaic .badge .ico { font-size: 16px; line-height: 1; }
 
   /* ===== GRID & CELLS ===== */
-  #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px;margin:20px auto;}
-  @media(min-width:768px){#grid{grid-template-columns:repeat(4,1fr);} }
-  .cell{background:#fff;border:1px solid #ccc;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 5px rgba(0,0,0,.1);transition:transform .2s ease;}
-  .cell:hover{transform:scale(1.02);}
+  #ariss-sstv-mosaic #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px auto;
+  }
+  @media (min-width: 768px) {
+    #ariss-sstv-mosaic #grid { grid-template-columns: repeat(4, 1fr); }
+    #ariss-sstv-mosaic #grid.mode-6 { grid-template-columns: repeat(3, 1fr); }
+    #ariss-sstv-mosaic #grid.mode-12 { grid-template-columns: repeat(4, 1fr); }
+  }
+  #ariss-sstv-mosaic #grid.fmt-pd120 { --tile-ratio: 640 / 496; }
+  #ariss-sstv-mosaic #grid.fmt-robot36 { --tile-ratio: 320 / 240; }
 
-  .image-wrapper{position:relative;width:100%;background:#eaeaea;aspect-ratio:640/496;}
-  .diploma-wrapper{aspect-ratio:1654/2339;}
+  #ariss-sstv-mosaic .cell {
+    background: #fff;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  #ariss-sstv-mosaic .cell:hover { transform: scale(1.02); }
+  #ariss-sstv-mosaic .cell.drag-over { box-shadow: 0 0 0 3px var(--primary); transform: scale(1.03); }
+  #ariss-sstv-mosaic .cell.dragging { opacity: .45; }
+  #ariss-sstv-mosaic .cell.pop { animation: ariss-pop .45s ease; }
+  @keyframes ariss-pop { 0% { transform: scale(.92); } 60% { transform: scale(1.04); } 100% { transform: scale(1); } }
 
-  @supports not (aspect-ratio: 1/1){
-    .image-wrapper::before,.diploma-wrapper::before{content:"";display:block;padding-top:calc(496/640*100%);}
-    .diploma-wrapper::before{padding-top:calc(2339/1654*100%);}
+  #ariss-sstv-mosaic .image-wrapper {
+    position: relative;
+    width: 100%;
+    background: #eaeaea;
+    aspect-ratio: var(--tile-ratio);
+  }
+  #ariss-sstv-mosaic .diploma-wrapper { aspect-ratio: 1654 / 2339; }
+  @supports not (aspect-ratio: 1 / 1) {
+    #ariss-sstv-mosaic .image-wrapper::before { content: ""; display: block; padding-top: 75%; }
+    #ariss-sstv-mosaic #grid.fmt-pd120 .image-wrapper::before { padding-top: calc(496 / 640 * 100%); }
+    #ariss-sstv-mosaic .diploma-wrapper::before { padding-top: calc(2339 / 1654 * 100%); }
+  }
+  #ariss-sstv-mosaic .image-wrapper > * { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+  #ariss-sstv-mosaic .image-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #ariss-sstv-mosaic .image-wrapper .tile-open { cursor: zoom-in; background: none; border: none; padding: 0; }
+  #ariss-sstv-mosaic .image-wrapper > .rx-pill {
+    top: auto; right: auto; left: 6px; bottom: 6px;
+    padding: 2px 8px; border-radius: 9999px;
+    background: rgba(0,0,0,.6); color: #fff; font-size: 11px; font-weight: 500;
+    pointer-events: none;
   }
 
-  .image-wrapper>*{position:absolute;top:0;left:0;right:0;bottom:0;}
-  .image-wrapper img{width:100%;height:100%;object-fit:cover;display:block;}
+  #ariss-sstv-mosaic .placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #000;
+    font-size: 14px;
+  }
+  #ariss-sstv-mosaic .placeholder small { font-weight: 400; color: #777; font-size: 11px; }
 
-  .placeholder {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-weight:bold;
-    color:#000;
-    font-size:14px;
-    font-family:'Inter',Arial,Helvetica,sans-serif;
+  #ariss-sstv-mosaic .upload-input { cursor: pointer; opacity: 0; width: 100%; height: 100%; }
+
+  #ariss-sstv-mosaic .cell-footer {
+    flex: 1 0 auto;
+    padding: 5px;
+    background: #f0f0f0;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    gap: 10px;
+  }
+  #ariss-sstv-mosaic .remove-btn { display: none; }
+
+  #ariss-sstv-mosaic .add-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 12px; }
+  #ariss-sstv-mosaic .add-row .muted { margin: 0; }
+
+  /* ===== BACKGROUNDS UI ===== */
+  #ariss-sstv-mosaic #background-section { margin: 20px auto; max-width: 1000px; }
+  #ariss-sstv-mosaic .section-title { font-size: 28px; color: #333; margin-bottom: 20px; }
+  #ariss-sstv-mosaic .background-options {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  #ariss-sstv-mosaic .bg-option {
+    position: relative;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 220px;
+    text-align: center;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+    transition: border .2s, transform .2s;
+  }
+  #ariss-sstv-mosaic .bg-option:hover { transform: translateY(-3px); }
+  #ariss-sstv-mosaic .bg-option.selected { border-color: var(--primary); }
+  #ariss-sstv-mosaic .bg-option img,
+  #ariss-sstv-mosaic .bg-option .color-preview {
+    width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block;
+  }
+  #ariss-sstv-mosaic .color-preview.white-bg { background: #fff; border: 1px solid #ccc; }
+  #ariss-sstv-mosaic .color-preview.black-bg { background: #000; border: 1px solid #ccc; }
+  #ariss-sstv-mosaic .bg-option[data-type="upload"] img.upload-icon {
+    object-fit: contain; padding: 20px; filter: contrast(1.2); background: #fafafa;
+  }
+  #ariss-sstv-mosaic .bg-option[data-type="upload"] img.upload-icon.has-custom { object-fit: cover; padding: 0; filter: none; }
+  #ariss-sstv-mosaic .bg-option .bg-upload-input {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
+  }
+  @media (min-width: 1024px) { #ariss-sstv-mosaic .bg-option { width: 260px; } }
+  @media (max-width: 768px) { #ariss-sstv-mosaic .bg-option { width: 180px; } }
+  @media (max-width: 600px) {
+    #ariss-sstv-mosaic .background-options { flex-wrap: wrap; }
+    #ariss-sstv-mosaic .bg-option { width: 100%; }
   }
 
-  .upload-input{cursor:pointer;opacity:0;}
+  /* ===== PREVIEW ===== */
+  #ariss-sstv-mosaic .preview-frame {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #eaeaea;
+    min-height: 120px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.05);
+  }
+  #ariss-sstv-mosaic .preview-frame canvas { display: block; width: 100%; height: auto; }
+  #ariss-sstv-mosaic .preview-tag {
+    position: absolute; bottom: 10px; right: 10px;
+    padding: 3px 10px; border-radius: 9999px;
+    background: rgba(255,255,255,.9); color: #0F6CAF; font-size: 12px; font-weight: 600;
+  }
+  #ariss-sstv-mosaic .toggles { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 14px 0 4px; font-size: 14px; color: #333; }
+  #ariss-sstv-mosaic .toggles label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+  #ariss-sstv-mosaic .actions-center { text-align: center; }
 
-  .cell-footer{padding:5px;background:#f0f0f0;border-top:1px solid #ccc;display:flex;justify-content:center;align-items:center;font-size:14px;gap:10px;font-family:'Inter',Arial,Helvetica,sans-serif;}
-  .remove-btn{display:none;}
+  /* ===== CERTIFICATE NOTICE ===== */
+  /* A quiet tinted panel right above the save buttons: read before saving,
+     but the filled "Save Mosaic as JPG" button stays the only primary action. */
+  #ariss-sstv-mosaic .cert-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    max-width: 720px;
+    margin: 22px auto 8px;
+    padding: 16px 20px;
+    background: var(--primary-soft);
+    border-radius: var(--radius);
+    text-align: left;
+  }
+  #ariss-sstv-mosaic .cert-icon {
+    flex: 0 0 36px; width: 36px; height: 36px; padding: 7px;
+    border-radius: 50%; background: #fff; color: #0F6CAF;
+  }
+  #ariss-sstv-mosaic .cert-text { flex: 1 1 auto; }
+  #ariss-sstv-mosaic .cert-text h3 { margin: 6px 0 4px; font-size: 15px; font-weight: 700; color: #333; }
+  #ariss-sstv-mosaic .cert-text p { margin: 0 0 8px; font-size: 14px; line-height: 1.5; color: #555; }
+  #ariss-sstv-mosaic .cert-text strong { color: #333; }
+  #ariss-sstv-mosaic .cert-link { font-size: 14px; font-weight: 600; color: #0F6CAF; text-decoration: none; }
+  #ariss-sstv-mosaic .cert-link:hover { text-decoration: underline; color: #0c568a; }
+  @media (max-width: 600px) {
+    #ariss-sstv-mosaic .cert-card { padding: 14px 16px; gap: 12px; }
+  }
 
-  /* WATERMARK */
-  #site-link{display:inline-block;margin-top:30px;font-size:14px;color:#007acc;text-decoration:none;} #site-link:hover{text-decoration:underline;}
-  .license-text{margin-top:20px;font-size:12px;color:#666;}
+  /* ===== ISS PASSES ===== */
+  #ariss-sstv-mosaic .iss-grid { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 720px) { #ariss-sstv-mosaic .iss-grid { grid-template-columns: 1fr; } }
+  #ariss-sstv-mosaic .polar { width: 100%; max-width: 280px; aspect-ratio: 1 / 1; display: block; margin: 0 auto; }
+  #ariss-sstv-mosaic .countdown { font-size: 28px; font-weight: 700; color: #333; font-variant-numeric: tabular-nums; }
+  #ariss-sstv-mosaic .countdown-label { font-size: 13px; color: #666; margin-bottom: 2px; }
+  #ariss-sstv-mosaic .overhead { color: var(--danger); }
+  #ariss-sstv-mosaic .pass-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+  #ariss-sstv-mosaic .pass-table th { text-align: left; font-weight: 500; color: #888; font-size: 12px; padding: 6px 4px; border-bottom: 1px solid #eee; }
+  #ariss-sstv-mosaic .pass-table td { padding: 8px 4px; border-bottom: 1px solid #f2f2f2; color: #333; font-variant-numeric: tabular-nums; }
+  #ariss-sstv-mosaic .pass-table tr.sel td { background: var(--primary-soft); }
+  #ariss-sstv-mosaic .pass-table tr { cursor: pointer; }
+  #ariss-sstv-mosaic .q { display: inline-block; padding: 1px 8px; border-radius: 9999px; font-size: 12px; }
+  #ariss-sstv-mosaic .q-great { background: var(--primary); color: #fff; }
+  #ariss-sstv-mosaic .q-good { background: var(--primary-soft); color: #0F6CAF; }
+  #ariss-sstv-mosaic .q-low { background: #f0f0f0; color: #888; }
+  #ariss-sstv-mosaic .freq-pill {
+    display: inline-block; margin-top: 10px; padding: 4px 12px; border-radius: 9999px;
+    background: #333; color: #fff; font-size: 13px; font-weight: 500; letter-spacing: .3px;
+  }
 
-  /* MODAL */
-  .modal {
+  /* ===== FOOTER ===== */
+  #ariss-sstv-mosaic .action-row-secondary { margin-top: 4px; }
+  #ariss-sstv-mosaic #site-link { display: inline-block; margin-top: 30px; font-size: 14px; color: #007acc; text-decoration: none; }
+  #ariss-sstv-mosaic #site-link:hover { text-decoration: underline; }
+  #ariss-sstv-mosaic .license-text { margin-top: 20px; font-size: 12px; color: #666; }
+
+  /* ===== DROP OVERLAY / CONFETTI ===== */
+  #ariss-sstv-mosaic .drop-overlay {
+    position: fixed; inset: 0; z-index: 10000; display: none;
+    align-items: center; justify-content: center;
+    background: rgba(15,108,175,.12);
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+  }
+  #ariss-sstv-mosaic .drop-overlay div {
+    padding: 22px 32px; border-radius: var(--radius); background: #fff; color: #0F6CAF;
+    border: 2px dashed var(--primary); font-size: 18px; font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+  }
+  #ariss-sstv-mosaic .confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10002; }
+
+  /* ===== MODALS ===== */
+  #ariss-sstv-mosaic .modal {
     display: none;
     position: fixed;
     z-index: 9999;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
+    inset: 0;
     background: rgba(0,0,0,.5);
     justify-content: center;
     align-items: center;
     overflow-y: auto;
-    padding-top: 20px;
   }
-  .modal-content {
+  #ariss-sstv-mosaic .modal-content {
     background: #fff;
     padding: 20px;
     max-width: 650px;
     width: 92%;
-    margin: auto;
     border-radius: var(--radius);
     position: relative;
     text-align: left;
     max-height: 80vh;
     overflow-y: auto;
+    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,.2);
   }
-  /* Help modal header layout */
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+  #ariss-sstv-mosaic .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  #ariss-sstv-mosaic .modal-header h3 { margin: 0; font-size: 1.5em; }
+  #ariss-sstv-mosaic .modal-close { font-size: 1.5em; cursor: pointer; }
+  #ariss-sstv-mosaic .frame-preview { width: 100%; border-radius: 12px; display: block; background: #eaeaea; image-rendering: auto; }
+  #ariss-sstv-mosaic .frame-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0 6px; }
+  #ariss-sstv-mosaic .frame-form label { font-size: 13px; color: #555; display: block; margin-bottom: 4px; }
+  #ariss-sstv-mosaic .frame-form input,
+  #ariss-sstv-mosaic .frame-form select {
+    width: 100%; padding: 8px 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; background: #fff; font-family: inherit;
   }
-  .modal-header h3 {
-    margin: 0;
-    font-size: 1.5em;
-  }
-  .modal-close {
-    font-size: 1.5em;
-    cursor: pointer;
-  }
-
-  @media(max-width:600px){
-    .modal-content {
-      width: 95%;
-      padding: 15px;
-    }
+  @media (max-width: 600px) {
+    #ariss-sstv-mosaic .modal-content { width: 95%; padding: 15px; }
+    #ariss-sstv-mosaic .frame-form { grid-template-columns: 1fr; }
   }
 
-  /* ===== BACKGROUNDS UI ===== */
-  #background-section {
-    margin:20px auto;
-    max-width:1000px;
-    font-family:'Inter',Arial,Helvetica,sans-serif;
+  @media (prefers-reduced-motion: reduce) {
+    #ariss-sstv-mosaic * { animation: none !important; transition: none !important; }
   }
-  .section-title {
-    font-size:28px;
-    color:#333;
-    margin-bottom:20px;
-  }
-  .background-options {
-    display:flex;
-    gap:15px;
-    justify-content:center;
-    flex-wrap:nowrap;
-    overflow-x:auto;
-    overflow-y:visible;
-    padding-top:10px;
-    padding-bottom:10px;
-  }
-  .bg-option {
-    position:relative;
-    cursor:pointer;
-    border:2px solid transparent;
-    border-radius:8px;
-    overflow:hidden;
-    width:220px;
-    text-align:center;
-    background:#fff;
-    box-shadow:0 2px 5px rgba(0,0,0,.1);
-    transition:border .2s, transform .2s;
-  }
-  .bg-option:hover { transform:translateY(-3px); }
-  .bg-option.selected { border-color:var(--primary); }
-  .bg-option img,
-  .bg-option .color-preview {
-    width:100%;
-    height:auto;
-    aspect-ratio:16/9;
-    object-fit:cover;
-    display:block;
-  }
-  .color-preview.white-bg {
-    background:#fff;
-    border:1px solid #ccc;
-  }
-  .color-preview.black-bg {
-    background:#000;
-    border:1px solid #ccc;
-  }
-  .bg-option[data-type="upload"] img.upload-icon {
-    object-fit:contain;
-    padding:20px;
-    filter:contrast(1.2);
-    background:#fafafa;
-  }
-  .bg-option .bg-upload-input {
-    position:absolute;
-    top:0; left:0;
-    width:100%; height:100%;
-    opacity:0;
-    cursor:pointer;
-  }
-  @media(min-width:1024px) {
-    .bg-option { width:260px; }
-  }
-  @media(max-width:768px) {
-    .bg-option { width:180px; }
-  }
-  @media(max-width:600px) {
-    .background-options { flex-wrap:wrap; }
-    .bg-option { width:100%; }
-  }
-
-  /* no change to other CSS */
 </style>
 
 <div id="ariss-sstv-mosaic">
   <div id="container">
-    <!-- Centered header and help -->
+    <!-- Header (titles are filled from EVENT_TITLE / EVENT_SUBTITLE in the script) -->
     <div style="text-align:center;">
       <div class="subtitle-small">SSTV MOSAIC GENERATOR</div>
-      <h1 id="main-title">ARISS SSTV Series 28</h1>
-      <h2 id="subtitle">Apollo Soyuz and STS-51F</h2>
-      <button id="howto-btn" class="btn btn-info" style="margin-top:10px;background:#0F6CAF;">Help</button>
+      <h1 id="main-title"></h1>
+      <h2 id="subtitle"></h2>
+      <button type="button" class="mode-info" id="mode-info" title="Change in Settings"></button>
+      <div><span class="event-banner" id="event-banner"><span class="live-dot" id="event-dot"></span><span id="event-text"></span></span></div>
+      <div>
+        <button id="howto-btn" class="btn btn-info" style="margin-top:10px;background:#0F6CAF;">Help</button>
+      </div>
     </div>
+
+    <div class="notice" id="notice" role="status"></div>
 
     <!-- Personal info fields -->
     <div class="field-group" id="user-fields">
       <div style="flex:1 1 220px;min-width:180px;">
         <label class="field-label" for="name-input">Name&nbsp;(required)</label>
-        <input type="text" id="name-input" placeholder="Your name" required />
+        <input type="text" id="name-input" placeholder="Your name" required="">
       </div>
       <div style="flex:1 1 220px;min-width:180px;">
         <label class="field-label" for="callsign-input">Callsign&nbsp;(optional)</label>
-        <input type="text" id="callsign-input" placeholder="Callsign (e.g. EA1ABC)" />
+        <input type="text" id="callsign-input" placeholder="Callsign (e.g. EA1ABC)" autocapitalize="characters">
       </div>
       <div style="flex:1 1 220px;min-width:180px;">
         <label class="field-label" for="locator-input">Grid Square&nbsp;(required)</label>
-        <input type="text" id="locator-input" placeholder="Locator (e.g. IM88sq)" required />
+        <input type="text" id="locator-input" placeholder="Locator (e.g. IM88sq)" required="">
       </div>
     </div>
+
+    <!-- Progress & achievements -->
+    <div class="card" id="progress-card">
+      <div class="progress-top">
+        <div>
+          <div class="big-count"><span id="count-now">0</span><small> / <span id="count-total">12</span></small></div>
+          <div class="muted" id="count-label">images received</div>
+        </div>
+        <div class="add-row">
+          <button class="btn btn-primary btn-sm" id="add-images-btn">Add images</button>
+          <p class="muted">or drag &amp; drop, or paste (Ctrl/&#8984;+V)</p>
+          <input type="file" id="multi-input" accept="image/*" multiple style="display:none;">
+        </div>
+      </div>
+      <div class="bar"><span id="progress-bar"></span></div>
+      <div id="missing-row" class="muted"></div>
+      <div class="badges" id="badges"></div>
+    </div>
+
+    <p class="muted tip" id="tap-tip">Tip: tap any received image to see it larger, adjust its reception time, move it or create an <strong>SWL card</strong>.</p>
 
     <!-- Image grid -->
     <div id="grid"></div>
 
-    <!-- Diploma clickable slot  -->
+    <!-- Diploma slot -->
     <div id="diploma-cell" class="cell" style="max-width:200px;margin:20px auto 10px;">
       <div class="image-wrapper diploma-wrapper">
         <div class="placeholder">Click to add Diploma</div>
-        <input type="file" accept="image/*" id="diploma-input" class="upload-input" />
+        <input type="file" accept="image/*" id="diploma-input" class="upload-input">
       </div>
       <div class="cell-footer">
         <span>Diploma <span style="color:#888;font-size:13px;">(optional)</span></span>
         <button id="diploma-remove" class="btn btn-danger remove-btn" style="padding:4px 8px;">Remove</button>
       </div>
-    </div> <!-- end of diploma-cell -->
+    </div>
 
     <!-- Background section -->
     <div id="background-section">
       <h2 class="section-title">Background</h2>
-      <div class="background-options">
+      <div class="background-options" id="background-options">
         <div class="bg-option selected" data-type="iss">
-          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/background_iss.jpg"
-               alt="International Space Station" />
+          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/background_iss.jpg" alt="International Space Station">
           <span>International Space Station</span>
         </div>
         <div class="bg-option" data-type="antenna">
-          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/background_ariss_colombus_module.jpg"
-               alt="ARISS Antenna on Columbus Module" />
+          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/background_ariss_colombus_module.jpg" alt="ARISS Antenna on Columbus Module">
           <span>ARISS Antenna on Columbus Module</span>
         </div>
         <div class="bg-option" data-type="pillars">
-          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/background_pillars_of_creation.jpg"
-               alt="Pillars Of Creation (JWST)" />
+          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/background_pillars_of_creation.jpg" alt="Pillars Of Creation (JWST)">
           <span>Pillars Of Creation (JWST)</span>
         </div>
         <div class="bg-option" data-type="white">
@@ -312,35 +640,88 @@
           <span>High Contrast (Black)</span>
         </div>
         <div class="bg-option" data-type="upload">
-          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/upload_icon.png"
-               alt="Upload Your Own" class="upload-icon" />
+          <img src="https://ariss-ea.org/wp-content/uploads/2025/07/upload_icon.png" alt="Upload Your Own" class="upload-icon">
           <span>Upload your own</span>
-          <input type="file" id="bg-upload-input" class="bg-upload-input" accept="image/*" />
+          <input type="file" id="bg-upload-input" class="bg-upload-input" accept="image/*">
         </div>
       </div>
     </div>
-    <!-- Reminder text above Save button -->
-    <div class="reminder-text">
-      Don't forget to submit your pictures to the
-      <a href="https://ariss-usa.org/ARISS_SSTV/" target="_blank">ARISS SSTV Gallery</a>
-      and request a certificate.
+
+    <!-- Live preview -->
+    <div class="card" id="preview-card">
+      <h3 class="card-title">Live preview</h3>
+      <p class="card-sub">This is exactly what your mosaic will look like. It updates as you go.</p>
+      <div class="preview-frame" id="preview-frame"><span class="preview-tag" id="preview-tag">Preview</span></div>
+      <div class="toggles">
+        <label><input type="checkbox" id="opt-rx"> Show reception time on each frame</label>
+        <label><input type="checkbox" id="opt-seal"> &ldquo;Complete set&rdquo; seal when all frames are in</label>
+      </div>
     </div>
 
-    <button id="save-btn" class="btn btn-primary">Save Mosaic as JPG</button>
+    <!-- Certificate notice: this tool does NOT submit anything to ARISS -->
+    <div class="cert-card" role="note" aria-labelledby="cert-title">
+      <svg class="cert-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M8.5 13.8 7 22l5-2.6 5 2.6-1.5-8.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M9.6 9.1l1.7 1.7 3.2-3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="cert-text">
+        <h3 id="cert-title">Want the official ARISS certificate?</h3>
+        <p>This tool does not send your images to ARISS. To get the certificate, <strong>upload your images to the ARISS SSTV Gallery</strong>. When you receive it, add it here as your <strong>Diploma</strong>.</p>
+        <a class="cert-link" href="https://ariss-usa.org/ARISS_SSTV/" target="_blank" rel="noopener">Go to the ARISS SSTV Gallery <span aria-hidden="true">&#8599;</span></a>
+      </div>
+    </div>
+
+    <div class="action-row-primary">
+      <button id="save-btn" class="btn btn-primary btn-hero">Save Mosaic as JPG</button>
+    </div>
+    <div class="action-row-share">
+      <button id="share-btn" class="btn btn-info" style="display:none;">Share</button>
+      <button id="story-btn" class="btn btn-ghost" title="Vertical 1080&times;1920 image for Instagram, TikTok or WhatsApp stories">Story format (9:16)</button>
+    </div>
+
+    <div class="action-row-secondary">
+      <button id="settings-btn" class="btn btn-secondary" title="Settings, Data &amp; Privacy">Settings</button>
+      <button id="clear-all-btn" class="btn btn-danger" title="Clear saved data">Clear all</button>
+    </div>
+
+    <!-- ISS passes -->
+    <div class="card" id="iss-card">
+      <h3 class="card-title">When can I receive the ISS?</h3>
+      <p class="card-sub" id="iss-sub">Enter your Grid Square above to see the next ISS passes over your station.</p>
+      <div class="iss-grid" id="iss-body" style="display:none;">
+        <div>
+          <canvas class="polar" id="polar" width="560" height="560" aria-label="Sky track of the selected pass"></canvas>
+          <p class="muted" style="text-align:center;margin:6px 0 0;" id="polar-caption"></p>
+        </div>
+        <div>
+          <div class="countdown-label" id="countdown-label">Next pass in</div>
+          <div class="countdown" id="countdown">--:--:--</div>
+          <div class="muted" id="iss-live"></div>
+          <span class="freq-pill" id="freq-pill"></span>
+          <table class="pass-table">
+            <thead><tr><th>Date</th><th>Start</th><th>Max elev.</th><th>Duration</th><th></th></tr></thead>
+            <tbody id="pass-rows"></tbody>
+          </table>
+          <p class="muted" style="margin-top:10px;">Times are in your local time. Passes above 20&deg; usually give the cleanest images.</p>
+        </div>
+      </div>
+    </div>
 
     <hr>
 
-    <span style="display:inline-block;width:40px;"></span>
-
-    <!-- Footer links removed: source-link button and reminder removed -->
-
     <div>
-      <a id="site-link" href="http://ariss-ea.org/sstv-mosaic" target="_blank">ariss-ea.org/sstv-mosaic</a>
+      <a id="site-link" href="https://ariss-ea.org/sstv-mosaic" target="_blank" rel="noopener">ariss-ea.org/sstv-mosaic</a>
     </div>
-    <div class="license-text">An <strong>ARISS-EA Open Source</strong> Initiative | <a href="https://github.com/ariss-ea/sstv-mosaic-generator" target="_blank">View Source</a></div>
-    <div class="license-text">Version <strong>0.2.2</strong> - 04/08/2025</div>
-    <canvas id="canvas" style="display:none;"></canvas>
+    <div class="license-text">
+      An <strong>ARISS-EA Open Source</strong> Initiative |
+      <a href="https://github.com/ariss-ea/sstv-mosaic-generator" target="_blank" rel="noopener">View Source</a>
+    </div>
+    <div class="license-text">Version <strong>2.1</strong> - 22/10/2026</div>
   </div>
+
+  <div class="drop-overlay" id="drop-overlay"><div>Drop your SSTV images here</div></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- Help modal -->
   <div id="help-modal" class="modal">
@@ -351,342 +732,1602 @@
       </div>
       <ol>
         <li>Enter <strong>Name</strong> and <strong>Grid Square</strong> (Callsign optional).</li>
-        <li>Click any <em>No image</em> slot to upload up to 12 SSTV frames (640×496 or matching aspect-ratio). Use the red <em>Remove</em> button to clear a slot.</li>
-        <li>Upload the official <strong>Diploma</strong> (optional). Use the red <em>Remove</em> button to clear it.</li>
-        <li>In the <strong>Background</strong> section, choose one of:
-          <ul>
-            <li>International Space Station</li>
-            <li>ARISS Antenna on Columbus Module</li>
-            <li>Pillars Of Creation (JWST)</li>
-            <li>High Contrast (White)</li>
-            <li>High Contrast (Black)</li>
-            <li>Upload your own (custom uploads get a semi-transparent overlay for text readability)</li>
-          </ul>
-        </li>
-        <li>Click <strong>Save Mosaic as JPG</strong>. The downloaded image includes:
-          <ul>
-            <li>ISS Expedition logo at top-left</li>
-            <li>Title and subtitle</li>
-            <li>Your personal info with high contrast</li>
-            <li>4×3 image grid with slot numbers</li>
-            <li>Optional diploma on the right</li>
-            <li>Selected background</li>
-          </ul>
-        </li>
-        <li>Download and share your SSTV mosaic!</li>
+        <li>Check <strong>When can I receive the ISS?</strong> to see the next passes over your station and listen on the downlink frequency.</li>
+        <li>Add the SSTV frames you receive: click a slot, use <strong>Add images</strong> to select several at once, drag &amp; drop them, or paste them. Drag a frame onto another slot to swap them.</li>
+        <li>Click a frame to see it larger, adjust its reception time, move it or make an <strong>SWL card</strong>.</li>
+        <li>Upload the official <strong>Diploma</strong> (optional) and pick a <strong>Background</strong>.</li>
+        <li>Click <strong>Save Mosaic as JPG</strong>, or <strong>Story format</strong> for social media.</li>
       </ol>
-      <p>Need support or want to give feedback? Visit <a href="https://ariss-ea.org/" target="_blank">ariss-ea.org</a>.</p>
+      <p><strong>Certificate:</strong> this tool does not send your images to ARISS. To get the official certificate, upload your images to the <a href="https://ariss-usa.org/ARISS_SSTV/" target="_blank" rel="noopener">ARISS SSTV Gallery</a>. When you receive it, you can add it to your mosaic as the Diploma.</p>
+      <p>Frames are kept at the native resolution of the SSTV mode (<strong>Robot36</strong> 320&times;240, <strong>PD120</strong> 640&times;496), so the Decomposer can extract them again. The mode and the number of images are set per event by the ARISS-EA Team and can be overridden in <strong>Settings</strong>.</p>
+      <p>Local saving is on by default so your data persists across visits. Use <strong>Settings</strong> to disable it and <strong>Clear all</strong> to remove saved data.</p>
+    </div>
+  </div>
+
+  <!-- Frame details modal -->
+  <div id="frame-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="frame-title">Frame</h3>
+        <span class="modal-close" id="frame-close">&times;</span>
+      </div>
+      <img class="frame-preview" id="frame-img" alt="">
+      <div class="frame-form">
+        <div>
+          <label for="frame-rx">Received (UTC)</label>
+          <input type="datetime-local" id="frame-rx" step="60">
+        </div>
+        <div>
+          <label for="frame-move">Slot</label>
+          <select id="frame-move"></select>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;margin-top:6px;">
+        <button class="btn btn-primary btn-sm" id="frame-swl">SWL card</button>
+        <button class="btn btn-secondary btn-sm" id="frame-replace">Replace image</button>
+        <button class="btn btn-danger btn-sm" id="frame-remove">Remove</button>
+        <input type="file" id="frame-replace-input" accept="image/*" style="display:none;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings modal -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Settings</h3>
+        <span class="modal-close" id="settings-close">&times;</span>
+      </div>
+      <div class="settings-block">
+        <h4>SSTV mode</h4>
+        <div class="mode-switch" aria-label="SSTV mode">
+          <button class="mode-btn" data-format="robot36">Robot36 (320&times;240)</button>
+          <button class="mode-btn" data-format="pd120">PD120 (640&times;496)</button>
+        </div>
+        <p class="settings-hint" id="format-hint"></p>
+      </div>
+      <div class="settings-block">
+        <h4>Number of images</h4>
+        <div class="mode-switch" aria-label="Mosaic mode">
+          <button class="mode-btn" data-mode="6">6 images</button>
+          <button class="mode-btn" data-mode="12">12 images</button>
+        </div>
+        <p class="settings-hint" id="mode-hint"></p>
+      </div>
+      <p style="margin:0 0 18px;">
+        <button type="button" class="settings-link" id="settings-reset">Reset to event defaults</button>
+      </p>
+      <div class="settings-block">
+        <h4>Data &amp; Privacy</h4>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <input type="checkbox" id="persist-toggle">
+          <label for="persist-toggle" style="user-select:none;">
+            Enable local saving (keeps your name, images, background, diploma and settings)
+          </label>
+        </div>
+        <p style="font-size:12px;color:#666;margin-top:10px;">
+          This only stores data in your browser. It never leaves your device. The ISS pass prediction is computed in your browser too.
+          When saving is off, new changes are not saved; anything saved before stays until you use <strong>Clear all</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clear all confirmation modal -->
+  <div id="clear-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Clear saved data?</h3>
+        <span class="modal-close" id="clear-close">&times;</span>
+      </div>
+      <p>
+        This removes locally saved fields, images, reception times, background and diploma for all modes.
+        It won&rsquo;t delete any files you already downloaded.
+      </p>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px;">
+        <button id="clear-cancel" class="btn btn-secondary">Cancel</button>
+        <button id="clear-confirm" class="btn btn-danger">Yes, clear</button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  // Initialize grid & storage
-  const gridContainer=document.getElementById('grid');
-  const TOTAL_SLOTS=12;
-  const imagesArray=new Array(TOTAL_SLOTS).fill(null);
+(function () {
+  'use strict';
 
-  // Create 12 cells
-  for(let i=0;i<TOTAL_SLOTS;i++){
-    const cell=document.createElement('div');
-    cell.className='cell';
-    cell.dataset.index=i;
-    cell.innerHTML=`
-      <div class="image-wrapper">
-        <div class="placeholder">No image</div>
-        <input type="file" accept="image/*" class="upload-input" />
-      </div>
-      <div class="cell-footer">
-        <span class="cell-number">${i+1}/${TOTAL_SLOTS}</span>
-        <button class="btn btn-danger remove-btn" style="padding:4px 8px;">Remove</button>
-      </div>
-    `;
-    gridContainer.appendChild(cell);
-  }
+  /* WORDPRESS NOTE: never write a bare less-than sign in this script (write
+     `b > a` instead of the opposite). When the page is saved, WordPress takes
+     it for the start of an HTML tag and turns the following && into
+     &#038;&#038;, which breaks the whole script. */
 
-  // Generic file handler
-  function handleFileSelect(inputEl,onLoad){
-    const file=inputEl.files[0];
-    if(!file)return;
-    const reader=new FileReader();
-    reader.onload=e=>{
-      const img=new Image();
-      img.onload=()=>onLoad(img);
-      img.src=e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
+  /* ================================================================
+     EVENT CONFIGURATION (webmaster: edit these for each SSTV series)
+     The title/subtitle below are the single source of truth: they are
+     written into the page AND drawn on the mosaic. Browser translation
+     can change the page text, but never what goes on the mosaic.
+     ================================================================ */
+  const EVENT_TITLE    = 'ARISS SSTV Series 34';
+  const EVENT_SUBTITLE = 'ARISS Hardware';
+  const EXPEDITION_LOGO_URL = 'https://ariss-ea.org/wp-content/uploads/2026/09/expedition_75.png';
+  const ARISS_LOGO_URL      = 'https://ariss-ea.org/wp-content/uploads/2026/10/ARISS_logo.png';
 
-  // Update a single cell display
-  function updateCellDisplay(cell,idx){
-    const wrapper=cell.querySelector('.image-wrapper');
-    wrapper.innerHTML='';
-    const fileInput=document.createElement('input');
-    fileInput.type='file';
-    fileInput.accept='image/*';
-    fileInput.className='upload-input';
-    fileInput.addEventListener('change',()=>{
-      handleFileSelect(fileInput,img=>{
-        imagesArray[idx]=img;
-        updateCellDisplay(cell,idx);
-        cell.querySelector('.remove-btn').style.display='inline-block';
-      });
-    });
-    wrapper.appendChild(fileInput);
+  const DEFAULT_MOSAIC_MODE = 12;          // 6 or 12
+  const DEFAULT_SSTV_FORMAT = 'robot36';   // 'robot36' or 'pd120'
 
-    if(imagesArray[idx]){
-      const imgEl=new Image();
-      imgEl.src=imagesArray[idx].src;
-      wrapper.insertBefore(imgEl,fileInput);
-    }else{
-      const placeholder=document.createElement('div');
-      placeholder.className='placeholder';
-      placeholder.textContent='No image';
-      wrapper.insertBefore(placeholder,fileInput);
-      cell.querySelector('.remove-btn').style.display='none';
-    }
-  }
+  /* Event window in UTC (ISO 8601), e.g. '2026-11-04T09:00:00Z'.
+     Leave as null to hide the "live / starts in" banner. */
+  const EVENT_START = '2026-10-22T15:30:00Z';
+  const EVENT_END   = '2026-10-26T17:45:00Z';
+  const DOWNLINK    = '437.550 MHz FM';
+  const SCHEDULE    = '36 s on / 2 min off';   // shown next to the frequency; '' to hide
 
-  // Attach handlers to image slots
-  document.querySelectorAll('#grid .upload-input').forEach((inp,i)=>{
-    inp.addEventListener('change',()=>{
-      handleFileSelect(inp,img=>{
-        imagesArray[i]=img;
-        const cell=inp.closest('.cell');
-        updateCellDisplay(cell,i);
-        cell.querySelector('.remove-btn').style.display='inline-block';
-      });
-    });
-  });
+  const APP_VERSION = '2.1';
 
-  document.querySelectorAll('#grid .remove-btn').forEach((btn,i)=>{
-    btn.addEventListener('click',e=>{
-      e.stopPropagation();
-      imagesArray[i]=null;
-      const cell=btn.closest('.cell');
-      updateCellDisplay(cell,i);
-    });
-  });
+  /* Native SSTV frame sizes. `scale` scales every other mosaic metric.
+     `out` multiplies the whole mosaic when it is exported: Robot36 frames
+     are tiny, so its mosaic is rendered at 2x (same size as a PD120 one)
+     to keep text, logos and the diploma sharp. */
+  const FORMATS = {
+    robot36: { label: 'Robot36', w: 320, h: 240, scale: 0.5, out: 2 },
+    pd120:   { label: 'PD120',   w: 640, h: 496, scale: 1,   out: 1 }
+  };
 
-  // Diploma slot handling
-  let diplomaImg=null;
-  const diplomaWrapper=document.querySelector('#diploma-cell .image-wrapper');
-  const diplomaInput=document.getElementById('diploma-input');
-  const diplomaRemove=document.getElementById('diploma-remove');
+  const SATELLITE_JS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/satellite.js/4.1.4/satellite.min.js';
+  /* ISS orbit (TLE). Our own cached copy first: it is served without CORS
+     headers, so on ariss-ea.org it is requested from the page's own origin
+     (works for both ariss-ea.org and www.ariss-ea.org). */
+  const ARISS_TLE_PATH = '/tle-cache/tle.json';
+  const onArissSite = /(^|\.)ariss-ea\.org$/i.test(location.hostname);
+  const TLE_SOURCES = [
+    { url: (onArissSite ? location.origin : 'https://ariss-ea.org') + ARISS_TLE_PATH, parse: t => { const j = JSON.parse(t); return [j.tle_line1, j.tle_line2]; } },
+    { url: 'https://api.wheretheiss.at/v1/satellites/25544/tles', parse: t => { const j = JSON.parse(t); return [j.line1, j.line2]; } }
+  ];
 
-  function refreshDiploma(){
-    diplomaWrapper.innerHTML='';
-    diplomaWrapper.appendChild(diplomaInput);
-    if(diplomaImg){
-      const imgEl=new Image();
-      imgEl.src=diplomaImg.src;
-      diplomaWrapper.insertBefore(imgEl,diplomaInput);
-      diplomaRemove.style.display='inline-block';
-    }else{
-      const pl=document.createElement('div');
-      pl.className='placeholder';
-      pl.textContent='Click to add Diploma';
-      diplomaWrapper.insertBefore(pl,diplomaInput);
-      diplomaRemove.style.display='none';
-    }
-  }
+  const root = document.getElementById('ariss-sstv-mosaic');
+  const $ = (sel) => root.querySelector(sel);
+  const $$ = (sel) => Array.from(root.querySelectorAll(sel));
 
-  diplomaInput.addEventListener('change',()=>{
-    handleFileSelect(diplomaInput,img=>{
-      diplomaImg=img;
-      refreshDiploma();
-    });
-  });
-  diplomaRemove.addEventListener('click',e=>{
-    e.stopPropagation();
-    diplomaImg=null;
-    diplomaInput.value='';
-    refreshDiploma();
-  });
-  refreshDiploma();
+  const gridContainer = $('#grid');
+  const nameInput = $('#name-input');
+  const callsignInput = $('#callsign-input');
+  const locatorInput = $('#locator-input');
+  const noticeEl = $('#notice');
 
-  // Preload default backgrounds
+  $('#main-title').textContent = EVENT_TITLE;
+  $('#subtitle').textContent = EVENT_SUBTITLE;
+
+  const emptyState = () => ({ 6: new Array(6).fill(null), 12: new Array(12).fill(null) });
+  const imageState = { robot36: emptyState(), pd120: emptyState() };
+  const rxState = { robot36: emptyState(), pd120: emptyState() };   // ISO reception times
+  let currentMode = DEFAULT_MOSAIC_MODE === 6 ? 6 : 12;
+  let currentFormat = FORMATS[DEFAULT_SSTV_FORMAT] ? DEFAULT_SSTV_FORMAT : 'robot36';
+  let opts = { showRx: true, seal: true };
+
+  let diplomaImg = null;
+  const diplomaWrapper = $('#diploma-cell .image-wrapper');
+  const diplomaInput = $('#diploma-input');
+  const diplomaRemove = $('#diploma-remove');
+
+  const UPLOAD_ICON_URL = 'https://ariss-ea.org/wp-content/uploads/2025/07/upload_icon.png';
   const defaultBgUrls = {
     iss: 'https://ariss-ea.org/wp-content/uploads/2025/07/background_iss.jpg',
     antenna: 'https://ariss-ea.org/wp-content/uploads/2025/07/background_ariss_colombus_module.jpg',
     pillars: 'https://ariss-ea.org/wp-content/uploads/2025/07/background_pillars_of_creation.jpg'
   };
+  function remoteImage(url) { const img = new Image(); img.crossOrigin = 'anonymous'; img.src = url; return img; }
   const defaultBgImgs = {};
-  Object.entries(defaultBgUrls).forEach(([type, url]) => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.src = url;
-    defaultBgImgs[type] = img;
+  Object.entries(defaultBgUrls).forEach(([type, url]) => { defaultBgImgs[type] = remoteImage(url); });
+  const expeditionLogo = remoteImage(EXPEDITION_LOGO_URL);
+  const arissLogo = remoteImage(ARISS_LOGO_URL);
+
+  let selectedBg = { type: 'iss', img: null, dataUrl: null };
+
+  const slots = () => imageState[currentFormat][currentMode];
+  const rxSlots = () => rxState[currentFormat][currentMode];
+
+  /* ================================================================
+     PERSISTENCE (shared with v1.6: same keys, same IndexedDB)
+     ================================================================ */
+  const LS = {
+    enabledKey: 'sstv_persist_enabled',
+    legacyModeKey: 'sstv_selected_mode',
+    settingsKey: 'sstv_settings',
+    fieldsKey: 'sstv_fields',
+    bgKey: 'sstv_bg',
+    optsKey: 'sstv_v2_options',
+    badgesKey: 'sstv_v2_badges',
+    tleKey: 'sstv_iss_tle',
+    rxKey: (fmt, m) => `sstv_rx_${fmt}_${m}`,
+    imgKey: (fmt, m) => fmt === 'pd120' ? `sstv_images_${m}` : `sstv_images_${fmt}_${m}`,
+    diplomaKey: 'sstv_diploma',
+    bgUploadKey: 'sstv_bg_upload'
+  };
+  const ALL_BIG_KEYS = [
+    LS.imgKey('pd120', 6), LS.imgKey('pd120', 12),
+    LS.imgKey('robot36', 6), LS.imgKey('robot36', 12),
+    LS.diplomaKey, LS.bgUploadKey
+  ];
+  const ALL_RX_KEYS = ['pd120', 'robot36'].flatMap(f => [LS.rxKey(f, 6), LS.rxKey(f, 12)]);
+
+  function persistEnabled() { try { return localStorage.getItem(LS.enabledKey) !== '0'; } catch (e) { return false; } }
+  function saveLS(key, val) { if (!persistEnabled()) return; try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+  function loadLS(key, def = null) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch (e) { return def; } }
+  function removeLS(key) { try { localStorage.removeItem(key); } catch (e) {} }
+
+  const BigStore = (() => {
+    let dbPromise = null;
+    function open() {
+      if (!dbPromise) {
+        dbPromise = new Promise((resolve, reject) => {
+          try {
+            const req = indexedDB.open('ariss-sstv-mosaic', 1);
+            req.onupgradeneeded = () => req.result.createObjectStore('kv');
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+          } catch (e) { reject(e); }
+        });
+      }
+      return dbPromise;
+    }
+    function run(mode, fn) {
+      return open().then(db => new Promise((resolve, reject) => {
+        const tx = db.transaction('kv', mode);
+        const req = fn(tx.objectStore('kv'));
+        tx.oncomplete = () => resolve(req.result);
+        tx.onerror = tx.onabort = () => reject(tx.error);
+      }));
+    }
+    return {
+      get: (k) => run('readonly', s => s.get(k)),
+      set: (k, v) => run('readwrite', s => s.put(v, k)),
+      del: (k) => run('readwrite', s => s.delete(k))
+    };
+  })();
+
+  async function loadBig(key) {
+    const legacy = loadLS(key, null);
+    if (legacy !== null) {
+      try { await BigStore.set(key, legacy); removeLS(key); } catch (e) {}
+      return legacy;
+    }
+    try { const v = await BigStore.get(key); return v === undefined ? null : v; } catch (e) { return null; }
+  }
+
+  let storageWarned = false;
+  function saveBig(key, val) {
+    if (!persistEnabled()) return Promise.resolve();
+    return BigStore.set(key, val)
+      .then(() => removeLS(key))
+      .catch(() => {
+        try { localStorage.setItem(key, JSON.stringify(val)); }
+        catch (e) {
+          if (!storageWarned) {
+            storageWarned = true;
+            showNotice('Your browser storage is full, so some images could not be saved locally. Your mosaic still works, but save it before closing this page.');
+          }
+        }
+      });
+  }
+
+  /* ================================================================
+     HELPERS
+     ================================================================ */
+  function loadImage(src) {
+    return new Promise(resolve => {
+      if (!src) return resolve(null);
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = src;
+    });
+  }
+  function readFileAsImage(file) {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = e => loadImage(e.target.result).then(resolve);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    });
+  }
+  function whenReady(img, timeout = 8000) {
+    return new Promise(resolve => {
+      if (img.complete) return resolve(img.naturalWidth ? img : null);
+      const done = (ok) => { clearTimeout(t); resolve(ok ? img : null); };
+      const t = setTimeout(() => resolve(img.complete && img.naturalWidth ? img : null), timeout);
+      img.addEventListener('load', () => done(true), { once: true });
+      img.addEventListener('error', () => done(false), { once: true });
+    });
+  }
+  function toDataUrl(img, w, h, quality = 0.92) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    const scale = Math.max(w / img.width, h / img.height);
+    const dw = img.width * scale, dh = img.height * scale;
+    ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+    return c.toDataURL('image/jpeg', quality);
+  }
+  function fitDataUrl(img, maxSide, quality = 0.9) {
+    const s = Math.min(1, maxSide / Math.max(img.width, img.height));
+    const w = Math.round(img.width * s), h = Math.round(img.height * s);
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, 0, 0, w, h);
+    return c.toDataURL('image/jpeg', quality);
+  }
+
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const pad2 = n => String(n).padStart(2, '0');
+  /* Fixed English UTC format for the mosaic (never translated or localised). */
+  function fmtRxUtc(iso) {
+    const d = new Date(iso); if (isNaN(d)) return '';
+    return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())} UTC`;
+  }
+  function fmtRxShort(iso) {
+    const d = new Date(iso); if (isNaN(d)) return '';
+    return `${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}Z \u00B7 ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
+  }
+  function fmtDuration(ms) {
+    const s = Math.max(0, Math.round(ms / 1000));
+    const d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), sec = s % 60;
+    return d ? `${d}d ${pad2(h)}h ${pad2(m)}m ${pad2(sec)}s` : `${pad2(h)}:${pad2(m)}:${pad2(sec)}`;
+  }
+
+  /* Maidenhead locator -> centre of the square. */
+  function locatorToLatLon(loc) {
+    const L = (loc || '').trim().toUpperCase();
+    if (!/^[A-R]{2}\d{2}(?:[A-X]{2}(?:\d{2})?)?$/.test(L)) return null;
+    let lon = (L.charCodeAt(0) - 65) * 20 - 180 + Number(L[2]) * 2;
+    let lat = (L.charCodeAt(1) - 65) * 10 - 90 + Number(L[3]);
+    let dLon = 2, dLat = 1;
+    if (L.length >= 6) { lon += (L.charCodeAt(4) - 65) * 2 / 24; lat += (L.charCodeAt(5) - 65) / 24; dLon = 2 / 24; dLat = 1 / 24; }
+    if (L.length >= 8) { lon += Number(L[6]) * 2 / 240; lat += Number(L[7]) / 240; dLon = 2 / 240; dLat = 1 / 240; }
+    return { lat: lat + dLat / 2, lon: lon + dLon / 2 };
+  }
+
+  /* ================================================================
+     NOTICE / TOAST / CONFETTI
+     ================================================================ */
+  function showNotice(text, actions = []) {
+    noticeEl.innerHTML = '';
+    const p = document.createElement('div'); p.textContent = text; noticeEl.appendChild(p);
+    if (actions.length) {
+      const row = document.createElement('div');
+      actions.forEach(a => {
+        const b = document.createElement('button');
+        b.className = 'btn ' + (a.primary ? 'btn-primary' : 'btn-secondary');
+        b.textContent = a.label;
+        b.addEventListener('click', a.onClick);
+        row.appendChild(b);
+      });
+      noticeEl.appendChild(row);
+    }
+    noticeEl.style.display = 'block';
+  }
+  function hideNotice() { noticeEl.style.display = 'none'; noticeEl.innerHTML = ''; }
+
+  const toastEl = $('#toast');
+  const toastQueue = [];
+  let toastBusy = false;
+  function toast(text, ms = 2400) {
+    toastQueue.push({ text, ms });
+    if (!toastBusy) nextToast();
+  }
+  function nextToast() {
+    const item = toastQueue.shift();
+    if (!item) { toastBusy = false; return; }
+    toastBusy = true;
+    toastEl.textContent = item.text;
+    toastEl.classList.add('show');
+    setTimeout(() => { toastEl.classList.remove('show'); setTimeout(nextToast, 300); }, item.ms);
+  }
+
+  function confetti() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const c = document.createElement('canvas'); c.className = 'confetti'; root.appendChild(c);
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+    const ctx = c.getContext('2d'); ctx.scale(dpr, dpr);
+    const colors = ['#0F6CAF', '#17a2b8', '#dc3545', '#eef5fb', '#6c757d', '#ffffff'];
+    const parts = Array.from({ length: 160 }, () => ({
+      x: innerWidth / 2 + (Math.random() - .5) * 200, y: innerHeight * .35,
+      vx: (Math.random() - .5) * 14, vy: -Math.random() * 14 - 4,
+      s: 5 + Math.random() * 6, r: Math.random() * Math.PI, vr: (Math.random() - .5) * .3,
+      c: colors[Math.floor(Math.random() * colors.length)]
+    }));
+    const t0 = performance.now();
+    (function frame(t) {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      parts.forEach(p => {
+        p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
+        ctx.fillStyle = p.c; ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2);
+        ctx.restore();
+      });
+      if (3200 > t - t0) requestAnimationFrame(frame); else c.remove();
+    })(t0);
+  }
+
+  /* ================================================================
+     MODE / FORMAT
+     ================================================================ */
+  function updateModeInfo() {
+    $('#mode-info').textContent = `${FORMATS[currentFormat].label} \u00B7 ${currentMode} images`;
+    $$('#settings-modal .mode-btn[data-format]').forEach(b => b.classList.toggle('active', b.dataset.format === currentFormat));
+    $$('#settings-modal .mode-btn[data-mode]').forEach(b => b.classList.toggle('active', Number(b.dataset.mode) === currentMode));
+    $('#format-hint').textContent = `Event default: ${FORMATS[DEFAULT_SSTV_FORMAT] ? FORMATS[DEFAULT_SSTV_FORMAT].label : 'Robot36'}. Each mode keeps its own images.`;
+    $('#mode-hint').textContent = `Event default: ${DEFAULT_MOSAIC_MODE === 6 ? 6 : 12} images.`;
+  }
+  function applyModeAndFormat(fmt, mode) {
+    currentFormat = FORMATS[fmt] ? fmt : currentFormat;
+    currentMode = mode === 6 ? 6 : (mode === 12 ? 12 : currentMode);
+    updateModeInfo();
+    buildGrid();
+    changed({ silent: true });
+  }
+  function setOverride(patch) {
+    const overrides = Object.assign({}, loadLS(LS.settingsKey, {}) || {}, patch);
+    saveLS(LS.settingsKey, overrides);
+    applyModeAndFormat(overrides.format || currentFormat, overrides.mode || currentMode);
+  }
+
+  /* ================================================================
+     SLOTS: adding, moving, removing frames
+     ================================================================ */
+  async function fileToFrame(file, fmt) {
+    const raw = await readFileAsImage(file);
+    if (!raw) return null;
+    const f = FORMATS[fmt];
+    const img = await loadImage(toDataUrl(raw, f.w, f.h));
+    // SSTV apps save the file the moment the image is decoded, so its time is the reception time.
+    const t = file.lastModified ? new Date(file.lastModified) : new Date();
+    return { img, rx: t.toISOString() };
+  }
+
+  /* Put files into the current grid: the first one into `startIdx` (if given),
+     the rest into the next empty slots. */
+  async function addFiles(fileList, startIdx = null) {
+    const fmt = currentFormat, mode = currentMode;
+    const all = Array.from(fileList || []);
+    const files = all.filter(f => /^image\//.test(f.type) || /\.(png|jpe?g|bmp|gif|webp)$/i.test(f.name || ''));
+    let unreadable = all.length - files.length;
+    const reportUnreadable = () => {
+      if (unreadable) toast(`${unreadable} file${unreadable > 1 ? 's' : ''} could not be opened as an image. Try saving ${unreadable > 1 ? 'them' : 'it'} as JPG or PNG.`);
+    };
+    if (!files.length) { reportUnreadable(); return; }
+    files.sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { numeric: true }));
+    const state = imageState[fmt][mode], rx = rxState[fmt][mode];
+    const targets = [];
+    if (startIdx !== null) targets.push(startIdx);
+    for (let i = 0; mode > i && files.length > targets.length; i++) {
+      if (!state[i] && !targets.includes(i)) targets.push(i);
+    }
+    const skipped = files.length - targets.length;
+    let added = 0;
+    for (let k = 0; targets.length > k; k++) {
+      const frame = await fileToFrame(files[k], fmt);
+      if (!frame) { unreadable++; continue; }
+      state[targets[k]] = frame.img;
+      rx[targets[k]] = frame.rx;
+      added++;
+      if (fmt === currentFormat && mode === currentMode) {
+        const cell = gridContainer.children[targets[k]];
+        if (cell) { updateCellDisplay(cell, targets[k]); cell.classList.remove('pop'); void cell.offsetWidth; cell.classList.add('pop'); }
+      }
+    }
+    persistImages(fmt, mode);
+    persistRx(fmt, mode);
+    if (added > 1) toast(`${added} images added`);
+    if (skipped > 0) toast(`All ${mode} slots are full: ${skipped} image${skipped > 1 ? 's were' : ' was'} not added`);
+    reportUnreadable();
+    changed();
+  }
+
+  function swapSlots(a, b) {
+    if (a === b) return;
+    const s = slots(), r = rxSlots();
+    [s[a], s[b]] = [s[b], s[a]];
+    [r[a], r[b]] = [r[b], r[a]];
+    updateCellDisplay(gridContainer.children[a], a);
+    updateCellDisplay(gridContainer.children[b], b);
+    persistImages(currentFormat, currentMode);
+    persistRx(currentFormat, currentMode);
+    changed({ silent: true });
+  }
+
+  function removeSlot(i) {
+    slots()[i] = null;
+    rxSlots()[i] = null;
+    updateCellDisplay(gridContainer.children[i], i);
+    persistImages(currentFormat, currentMode);
+    persistRx(currentFormat, currentMode);
+    changed({ silent: true });
+  }
+
+  /* ================================================================
+     GRID / CELLS
+     ================================================================ */
+  let dragFrom = null;
+
+  function createCell(i, total) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.dataset.index = i;
+    cell.innerHTML = `
+      <div class="image-wrapper"></div>
+      <div class="cell-footer">
+        <span class="cell-number">${i + 1}/${total}</span>
+        <button class="btn btn-danger remove-btn" style="padding:4px 8px;">Remove</button>
+      </div>
+    `;
+    cell.querySelector('.remove-btn').addEventListener('click', e => { e.stopPropagation(); removeSlot(i); });
+
+    // Drag a frame onto another slot to swap; drop files on a slot to fill it.
+    cell.addEventListener('dragstart', e => {
+      if (!slots()[i]) { e.preventDefault(); return; }
+      dragFrom = i; cell.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try { e.dataTransfer.setData('text/plain', String(i)); } catch (err) {}
+    });
+    cell.addEventListener('dragend', () => { dragFrom = null; cell.classList.remove('dragging'); });
+    cell.addEventListener('dragover', e => { e.preventDefault(); cell.classList.add('drag-over'); });
+    cell.addEventListener('dragleave', () => cell.classList.remove('drag-over'));
+    cell.addEventListener('drop', e => {
+      e.preventDefault(); e.stopPropagation();
+      cell.classList.remove('drag-over');
+      hideDropOverlay();
+      if (e.dataTransfer.files && e.dataTransfer.files.length) addFiles(e.dataTransfer.files, i);
+      else if (dragFrom !== null) swapSlots(dragFrom, i);
+    });
+
+    updateCellDisplay(cell, i);
+    return cell;
+  }
+
+  function updateCellDisplay(cell, idx) {
+    const wrapper = cell.querySelector('.image-wrapper');
+    const removeBtn = cell.querySelector('.remove-btn');
+    wrapper.innerHTML = '';
+    const imgObj = slots()[idx];
+    cell.draggable = !!imgObj;
+
+    if (imgObj) {
+      const btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'tile-open'; btn.title = 'Details';
+      const imgEl = new Image(); imgEl.src = imgObj.src; imgEl.alt = `SSTV image ${idx + 1}`; imgEl.draggable = false;
+      btn.appendChild(imgEl);
+      btn.addEventListener('click', () => openFrame(idx));
+      wrapper.appendChild(btn);
+      const rx = rxSlots()[idx];
+      if (rx) {
+        const pill = document.createElement('span'); pill.className = 'rx-pill'; pill.textContent = fmtRxShort(rx);
+        wrapper.appendChild(pill);
+      }
+      removeBtn.style.display = 'inline-block';
+    } else {
+      const ph = document.createElement('div'); ph.className = 'placeholder';
+      ph.innerHTML = 'No image<small>click or drop</small>';
+      wrapper.appendChild(ph);
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file'; fileInput.accept = 'image/*'; fileInput.multiple = true; fileInput.className = 'upload-input';
+      fileInput.title = 'Click to choose images';
+      fileInput.addEventListener('change', () => { addFiles(fileInput.files, idx); });
+      wrapper.appendChild(fileInput);
+      removeBtn.style.display = 'none';
+    }
+  }
+
+  function buildGrid() {
+    gridContainer.innerHTML = '';
+    gridContainer.className = `mode-${currentMode} fmt-${currentFormat}`;
+    for (let i = 0; currentMode > i; i++) gridContainer.appendChild(createCell(i, currentMode));
+  }
+
+  /* Global drag & drop and paste */
+  const dropOverlay = $('#drop-overlay');
+  let dragDepth = 0;
+  const hasFiles = e => e.dataTransfer && Array.from(e.dataTransfer.types || []).includes('Files');
+  function hideDropOverlay() { dragDepth = 0; dropOverlay.style.display = 'none'; }
+  document.addEventListener('dragenter', e => { if (!hasFiles(e)) return; dragDepth++; dropOverlay.style.display = 'flex'; });
+  document.addEventListener('dragleave', e => { if (!hasFiles(e)) return; if (0 >= --dragDepth) hideDropOverlay(); });
+  document.addEventListener('dragover', e => { if (hasFiles(e)) e.preventDefault(); });
+  document.addEventListener('drop', e => {
+    if (!hasFiles(e)) return;
+    hideDropOverlay();
+    // Drops on the diploma / background inputs are handled by those inputs.
+    if (e.target.closest && e.target.closest('#diploma-cell, #background-section')) return;
+    e.preventDefault();
+    addFiles(e.dataTransfer.files);
+  });
+  document.addEventListener('paste', e => {
+    const t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA') && t.type !== 'file') {
+      // Allow pasting text into fields; only grab images.
+      const items = Array.from((e.clipboardData && e.clipboardData.items) || []);
+      if (!items.some(it => it.kind === 'file')) return;
+    }
+    const files = Array.from((e.clipboardData && e.clipboardData.files) || []).filter(f => /^image\//.test(f.type));
+    if (!files.length) return;
+    e.preventDefault();
+    addFiles(files);
   });
 
-  // Preload ISS Expedition logo
-  const expeditionLogo = new Image();
-  expeditionLogo.crossOrigin = 'anonymous';
-  expeditionLogo.src = 'https://ariss-ea.org/wp-content/uploads/2025/07/expedition_73.png';
+  const multiInput = $('#multi-input');
+  $('#add-images-btn').addEventListener('click', () => multiInput.click());
+  multiInput.addEventListener('change', () => { addFiles(multiInput.files); multiInput.value = ''; });
 
-  // Background selection logic
-  const bgOptions = document.querySelectorAll('.bg-option');
-  let selectedBg = { type:'iss', img:null };
-  bgOptions.forEach(opt => {
-    const type = opt.dataset.type;
-    opt.addEventListener('click', () => {
-      if (type === 'upload') return;
-      bgOptions.forEach(o => o.classList.remove('selected'));
-      opt.classList.add('selected');
-      selectedBg = { type, img: null };
+  /* ================================================================
+     FRAME DETAILS MODAL
+     ================================================================ */
+  const frameModal = $('#frame-modal');
+  const frameRx = $('#frame-rx');
+  const frameMove = $('#frame-move');
+  let frameIdx = null;
+
+  function openFrame(i) {
+    frameIdx = i;
+    $('#frame-title').textContent = `Frame ${i + 1}/${currentMode}`;
+    $('#frame-img').src = slots()[i].src;
+    const rx = rxSlots()[i];
+    frameRx.value = rx ? rx.slice(0, 16) : '';
+    frameMove.innerHTML = '';
+    for (let k = 0; currentMode > k; k++) {
+      const o = document.createElement('option');
+      o.value = k; o.textContent = `${k + 1}/${currentMode}` + (k === i ? ' (current)' : (slots()[k] ? ' (swap)' : ' (empty)'));
+      if (k === i) o.selected = true;
+      frameMove.appendChild(o);
+    }
+    frameModal.style.display = 'flex';
+  }
+  frameRx.addEventListener('change', () => {
+    if (frameIdx === null) return;
+    const d = frameRx.value ? new Date(frameRx.value + ':00Z') : null;
+    rxSlots()[frameIdx] = d && !isNaN(d) ? d.toISOString() : null;
+    updateCellDisplay(gridContainer.children[frameIdx], frameIdx);
+    persistRx(currentFormat, currentMode);
+    changed({ silent: true });
+  });
+  frameMove.addEventListener('change', () => {
+    const to = Number(frameMove.value);
+    swapSlots(frameIdx, to);
+    openFrame(to);
+  });
+  $('#frame-remove').addEventListener('click', () => { removeSlot(frameIdx); frameModal.style.display = 'none'; });
+  const frameReplaceInput = $('#frame-replace-input');
+  $('#frame-replace').addEventListener('click', () => frameReplaceInput.click());
+  frameReplaceInput.addEventListener('change', async () => {
+    const file = frameReplaceInput.files[0]; frameReplaceInput.value = '';
+    if (!file) return;
+    await addFiles([file], frameIdx);
+    openFrame(frameIdx);
+  });
+  $('#frame-swl').addEventListener('click', async () => {
+    const btn = $('#frame-swl'); btn.disabled = true;
+    try {
+      const canvas = await renderSwlCard(frameIdx);
+      const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.95));
+      deliver(blob, `swl_card_${frameIdx + 1}of${currentMode}.jpg`);
+    } catch (e) { console.error(e); alert('Sorry, the SWL card could not be generated.'); }
+    btn.disabled = false;
+  });
+
+  /* ================================================================
+     DIPLOMA
+     ================================================================ */
+  function refreshDiploma() {
+    diplomaWrapper.innerHTML = '';
+    if (diplomaImg) {
+      const imgEl = new Image(); imgEl.src = diplomaImg.src; imgEl.alt = 'Diploma';
+      diplomaWrapper.appendChild(imgEl);
+      diplomaRemove.style.display = 'inline-block';
+    } else {
+      const pl = document.createElement('div'); pl.className = 'placeholder'; pl.textContent = 'Click to add Diploma';
+      diplomaWrapper.appendChild(pl);
+      diplomaRemove.style.display = 'none';
+    }
+    diplomaWrapper.appendChild(diplomaInput);
+  }
+  diplomaInput.addEventListener('change', async () => {
+    const file = diplomaInput.files[0]; if (!file) return;
+    const raw = await readFileAsImage(file);
+    if (!raw) { alert('That file could not be read as an image.'); return; }
+    diplomaImg = await loadImage(fitDataUrl(raw, 2400, 0.92));
+    diplomaInput.value = '';
+    refreshDiploma(); persistDiploma(); changed();
+  });
+  diplomaRemove.addEventListener('click', e => {
+    e.stopPropagation();
+    diplomaImg = null; diplomaInput.value = '';
+    refreshDiploma(); persistDiploma(); changed({ silent: true });
+  });
+
+  /* ================================================================
+     BACKGROUND
+     ================================================================ */
+  const bgContainer = $('#background-options');
+  const bgUploadInput = $('#bg-upload-input');
+  const uploadIcon = $('.bg-option[data-type="upload"] img.upload-icon');
+
+  function markBgSelected(type) { $$('.bg-option').forEach(o => o.classList.toggle('selected', o.dataset.type === type)); }
+  function setUploadPreview(src) { uploadIcon.src = src || UPLOAD_ICON_URL; uploadIcon.classList.toggle('has-custom', !!src); }
+
+  bgContainer.addEventListener('click', (e) => {
+    const card = e.target.closest('.bg-option');
+    if (!card || !bgContainer.contains(card)) return;
+    const type = card.dataset.type;
+    if (type === 'upload') return;
+    selectedBg = { type, img: null, dataUrl: null };
+    markBgSelected(type);
+    persistBg();
+    changed({ silent: true });
+  });
+  bgUploadInput.addEventListener('change', async () => {
+    const file = bgUploadInput.files[0]; if (!file) return;
+    const raw = await readFileAsImage(file);
+    if (!raw) { alert('That file could not be read as an image.'); return; }
+    const dataUrl = fitDataUrl(raw, 3840, 0.88);
+    const img = await loadImage(dataUrl);
+    selectedBg = { type: 'upload', img, dataUrl };
+    markBgSelected('upload');
+    setUploadPreview(dataUrl);
+    bgUploadInput.value = '';
+    persistBg();
+    saveBig(LS.bgUploadKey, dataUrl);
+    changed({ silent: true });
+  });
+
+  /* ================================================================
+     PERSISTENCE HELPERS
+     ================================================================ */
+  function persistFields() {
+    saveLS(LS.fieldsKey, { name: nameInput.value, callsign: callsignInput.value, locator: locatorInput.value });
+  }
+  [nameInput, callsignInput, locatorInput].forEach(inp => inp.addEventListener('input', () => { persistFields(); changed({ silent: true }); }));
+  locatorInput.addEventListener('change', () => updateIss(true));
+
+  function persistImages(fmt, mode) { return saveBig(LS.imgKey(fmt, mode), imageState[fmt][mode].map(img => img ? img.src : null)); }
+  function persistRx(fmt, mode) { saveLS(LS.rxKey(fmt, mode), rxState[fmt][mode]); }
+  function persistDiploma() { return saveBig(LS.diplomaKey, diplomaImg ? diplomaImg.src : null); }
+  function persistBg() { saveLS(LS.bgKey, { type: selectedBg.type }); }
+  function persistAll() {
+    persistFields(); persistBg(); saveLS(LS.optsKey, opts);
+    if (selectedBg.type === 'upload' && selectedBg.dataUrl) saveBig(LS.bgUploadKey, selectedBg.dataUrl);
+    persistDiploma();
+    Object.keys(FORMATS).forEach(fmt => [6, 12].forEach(m => { persistImages(fmt, m); persistRx(fmt, m); }));
+  }
+
+  /* Saved data is always shown. Turning local saving off only stops new
+     changes from being written, so turning it back on can never overwrite
+     earlier progress with an empty page. "Clear all" deletes it. */
+  async function loadPersisted() {
+
+    const overrides = loadLS(LS.settingsKey, {}) || {};
+    if (FORMATS[overrides.format]) currentFormat = overrides.format;
+    if (overrides.mode === 6 || overrides.mode === 12) currentMode = overrides.mode;
+    opts = Object.assign(opts, loadLS(LS.optsKey, {}) || {});
+
+    const fields = loadLS(LS.fieldsKey, null);
+    if (fields) {
+      nameInput.value = fields.name || '';
+      callsignInput.value = fields.callsign || '';
+      locatorInput.value = fields.locator || '';
+    }
+
+    const bg = loadLS(LS.bgKey, null);
+    if (bg && bg.dataUrl) {
+      try { await BigStore.set(LS.bgUploadKey, bg.dataUrl); saveLS(LS.bgKey, { type: bg.type }); } catch (e) {}
+    }
+    const uploadData = (bg && bg.dataUrl) || await loadBig(LS.bgUploadKey);
+    if (uploadData) setUploadPreview(uploadData);
+    if (bg && bg.type === 'upload') {
+      const img = uploadData ? await loadImage(uploadData) : null;
+      selectedBg = img ? { type: 'upload', img, dataUrl: uploadData } : { type: 'iss', img: null, dataUrl: null };
+    } else if (bg && bg.type && (defaultBgUrls[bg.type] || bg.type === 'white' || bg.type === 'black')) {
+      selectedBg = { type: bg.type, img: null, dataUrl: null };
+    }
+    markBgSelected(selectedBg.type);
+
+    for (const fmt of Object.keys(FORMATS)) {
+      for (const m of [6, 12]) {
+        const data = await loadBig(LS.imgKey(fmt, m));
+        if (Array.isArray(data)) {
+          imageState[fmt][m] = await Promise.all(new Array(m).fill(null).map((_, i) => loadImage(data[i])));
+        }
+        const rx = loadLS(LS.rxKey(fmt, m), null);
+        if (Array.isArray(rx)) rxState[fmt][m] = new Array(m).fill(null).map((_, i) => rx[i] || null);
+      }
+    }
+
+    const dip = await loadBig(LS.diplomaKey);
+    if (dip) diplomaImg = await loadImage(dip);
+  }
+
+  /* ================================================================
+     PROGRESS & ACHIEVEMENTS
+     ================================================================ */
+  const BADGES = [
+    { id: 'first',   ico: '\u{1F4E1}', name: 'First light',  test: s => s.count >= 1 },
+    { id: 'half',    ico: '\u{1F313}', name: 'Halfway',      test: s => s.count >= s.total / 2 },
+    { id: 'full',    ico: '\u{1F3C6}', name: 'Full set',     test: s => s.count === s.total },
+    { id: 'passes',  ico: '\u{1F6F0}\uFE0F', name: 'Multi-pass', test: s => s.passes >= 2 },
+    { id: 'night',   ico: '\u{1F319}', name: 'Night owl',    test: s => s.night },
+    { id: 'op',      ico: '\u{1F4FB}', name: 'Licensed op',  test: s => s.callsign },
+    { id: 'grid',    ico: '\u{1F5FA}\uFE0F', name: 'On the map', test: s => s.located },
+    { id: 'diploma', ico: '\u{1F393}', name: 'Diploma',      test: s => s.diploma }
+  ];
+  let unlocked = new Set(loadLS(LS.badgesKey, []) || []);
+  let lastCount = null;
+
+  function stats() {
+    const s = slots(), rx = rxSlots().filter(Boolean).map(t => new Date(t).getTime()).sort((a, b) => a - b);
+    let passes = rx.length ? 1 : 0;
+    for (let i = 1; rx.length > i; i++) if (rx[i] - rx[i - 1] > 45 * 60000) passes++;
+    return {
+      count: s.filter(Boolean).length,
+      total: currentMode,
+      passes,
+      night: rx.some(t => { const h = new Date(t).getHours(); return h >= 0 && 5 > h; }),
+      callsign: /^[A-Z0-9]{1,3}\d[A-Z0-9]{0,4}[A-Z](\/[A-Z0-9]+)?$/i.test(callsignInput.value.trim()),
+      located: !!locatorToLatLon(locatorInput.value),
+      diploma: !!diplomaImg
+    };
+  }
+
+  function updateProgress(silent) {
+    const st = stats();
+    $('#count-now').textContent = st.count;
+    $('#count-total').textContent = st.total;
+    $('#count-label').textContent = st.count === st.total ? 'Complete set! Well done, 73!' : 'images received';
+    $('#progress-bar').style.width = `${(st.count / st.total) * 100}%`;
+    const missing = slots().map((v, i) => v ? null : i + 1).filter(Boolean);
+    const missingRow = $('#missing-row');
+    missingRow.innerHTML = '';
+    if (missing.length && st.total > missing.length) {
+      missingRow.appendChild(document.createTextNode('Still missing: '));
+      missing.forEach(n => { const c = document.createElement('span'); c.className = 'chip'; c.textContent = n; missingRow.appendChild(c); });
+    }
+
+    const badgesEl = $('#badges');
+    badgesEl.innerHTML = '';
+    BADGES.forEach(b => {
+      const on = b.test(st);
+      const el = document.createElement('span');
+      el.className = 'badge' + (on ? ' on' : '');
+      el.innerHTML = `<span class="ico" aria-hidden="true">${b.ico}</span><span></span>`;
+      el.lastChild.textContent = b.name;
+      el.title = on ? 'Unlocked' : 'Locked';
+      badgesEl.appendChild(el);
+      if (on && !unlocked.has(b.id)) {
+        unlocked.add(b.id);
+        if (!silent) toast(`${b.ico}  Achievement unlocked: ${b.name}`);
+      }
+    });
+    saveLS(LS.badgesKey, Array.from(unlocked));
+
+    if (!silent && lastCount !== null && st.total > lastCount && st.count === st.total) confetti();
+    lastCount = st.count;
+  }
+
+  /* Called after any change: progress, badges and the live preview. */
+  let previewTimer = null;
+  function changed({ silent = false } = {}) {
+    updateProgress(silent);
+    clearTimeout(previewTimer);
+    previewTimer = setTimeout(updatePreview, 350);
+  }
+
+  /* ================================================================
+     MOSAIC RENDERING
+     Geometry is identical to v1.6 (PD120 = v1.5 geometry; Robot36 = x0.5),
+     so the Decomposer works with v2.0 mosaics too.
+     ================================================================ */
+  function fontsReady() {
+    if (!document.fonts || !document.fonts.load) return Promise.resolve();
+    const loads = ['bold 72px Inter', '600 72px Inter', '72px Inter'].map(f => document.fonts.load(f).catch(() => {}));
+    return Promise.race([Promise.all(loads), new Promise(r => setTimeout(r, 3000))]);
+  }
+  function fitFont(ctx, text, weight, size, maxWidth) {
+    let s = size;
+    ctx.font = `${weight}${s}px Inter`;
+    while (s > 8 && ctx.measureText(text).width > maxWidth) { s -= 1; ctx.font = `${weight}${s}px Inter`; }
+    return s;
+  }
+  async function backgroundImage() {
+    if (selectedBg.type === 'upload') return selectedBg.img;
+    return defaultBgImgs[selectedBg.type] ? whenReady(defaultBgImgs[selectedBg.type]) : null;
+  }
+  function paintBackground(ctx, w, h, bgImg) {
+    if (selectedBg.type === 'white') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); return; }
+    if (bgImg) {
+      const scale = Math.max(w / bgImg.width, h / bgImg.height);
+      const bw = bgImg.width * scale, bh = bgImg.height * scale;
+      ctx.drawImage(bgImg, (w - bw) / 2, (h - bh) / 2, bw, bh);
+      if (selectedBg.type === 'upload') { ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.fillRect(0, 0, w, h); }
+    } else {
+      ctx.fillStyle = '#000'; ctx.fillRect(0, 0, w, h);
+    }
+  }
+
+  /* Round "complete set" seal in the ARISS-EA blue. */
+  function drawSeal(ctx, cx, cy, r, total) {
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = r * .25;
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fillStyle = '#0F6CAF'; ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.lineWidth = r * .06; ctx.strokeStyle = '#fff';
+    ctx.beginPath(); ctx.arc(cx, cy, r * .86, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([r * .05, r * .07]); ctx.lineWidth = r * .03;
+    ctx.beginPath(); ctx.arc(cx, cy, r * .74, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = `bold ${r * .42}px Inter`; ctx.fillText(`${total}/${total}`, cx, cy - r * .08);
+    ctx.font = `600 ${r * .16}px Inter`; ctx.fillText('COMPLETE SET', cx, cy + r * .32);
+    ctx.restore();
+  }
+
+  async function renderMosaic({ preview = false } = {}) {
+    const fmt = FORMATS[currentFormat];
+    const S = fmt.scale;
+    const mode = currentMode;
+    const name = nameInput.value.trim() || (preview ? 'Your name' : '');
+    const callsign = callsignInput.value.trim();
+    const locator = locatorInput.value.trim() || (preview ? 'Grid square' : '');
+
+    const [, expLogo, aLogo, bgImg] = await Promise.all([fontsReady(), whenReady(expeditionLogo), whenReady(arissLogo), backgroundImage()]);
+
+    const cols = mode === 6 ? 3 : 4;
+    const rows = mode === 6 ? 2 : 3;
+    const cellW = fmt.w, cellH = fmt.h, footerH = 30 * S;
+    const titleSize = 72 * S, subtitleSize = 48 * S, infoSize = 42 * S, pad = 20 * S, between = 10 * S, lineGap = 4 * S;
+
+    const infoLines = [name + (callsign ? ` (${callsign})` : ''), locator];
+    const infoHeight = infoLines.length * infoSize + (infoLines.length - 1) * lineGap;
+    const titleY = pad + titleSize;
+    const subtitleY = titleY + between + subtitleSize;
+    const infoStartY = subtitleY + between;
+    const gridStartY = infoStartY + infoHeight + pad;
+    const gridH = (cellH + footerH) * rows;
+
+    let dipW = 0, dipH = 0, gap = 0;
+    if (diplomaImg) { dipW = Math.round(diplomaImg.width * (gridH / diplomaImg.height)); dipH = gridH; gap = 40 * S; }
+
+    const canvasW = cellW * cols + dipW + gap;
+    const canvasH = gridStartY + gridH;
+    // The live preview is shown small, so render it at 1x (4x fewer pixels on phones).
+    const R = preview ? 1 : (fmt.out || 1);
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasW * R; canvas.height = canvasH * R;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(R, R);
+    ctx.imageSmoothingQuality = 'high';
+
+    paintBackground(ctx, canvasW, canvasH, bgImg);
+    const textColor = selectedBg.type === 'white' ? '#000' : '#fff';
+
+    const logoSize = Math.min(200 * S, gridStartY - 2 * pad);
+    const logoMargin = (gridStartY - logoSize) / 2;
+    let logosRight = 0, logoX = logoMargin;
+    [expLogo, aLogo].forEach(logo => {
+      if (!logo) return;
+      const w = logoSize * (logo.naturalWidth / logo.naturalHeight);
+      ctx.drawImage(logo, logoX, logoMargin, w, logoSize);
+      logosRight = logoX + w; logoX = logosRight + pad;
+    });
+    const leftReserved = logosRight ? logosRight + pad : 0;
+
+    const watermarkText = 'ariss-ea.org/sstv-mosaic';
+    const watermarkSize = ((mode === 6 && !diplomaImg) ? 42 : 50) * S;
+    ctx.font = `${watermarkSize}px Inter`;
+    ctx.fillStyle = (selectedBg.type === 'white' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.7)');
+    ctx.textAlign = 'right';
+    ctx.fillText(watermarkText, canvasW - 10 * S, 60 * S);
+    const rightReserved = ctx.measureText(watermarkText).width + 20 * S;
+
+    const count = slots().filter(Boolean).length;
+    const sealOn = opts.seal && count === mode;
+    const sealR = 80 * S;
+    const sealReserved = sealOn ? 2 * sealR + 40 * S : 0;
+    if (sealOn) drawSeal(ctx, canvasW - 20 * S - sealR, Math.max(60 * S + sealR + 10 * S, gridStartY / 2 + 25 * S), sealR, mode);
+
+    const centre = canvasW / 2;
+    const halfFree = centre - leftReserved;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = textColor;
+    fitFont(ctx, EVENT_TITLE, 'bold ', titleSize, 2 * Math.min(halfFree, centre - rightReserved));
+    ctx.fillText(EVENT_TITLE, centre, titleY);
+    const lowerHalf = Math.min(halfFree, centre - sealReserved);
+    fitFont(ctx, EVENT_SUBTITLE, '', subtitleSize, 2 * lowerHalf);
+    ctx.fillText(EVENT_SUBTITLE, centre, subtitleY);
+    let curY = infoStartY;
+    infoLines.forEach(line => {
+      fitFont(ctx, line, 'bold ', infoSize, 2 * lowerHalf);
+      ctx.fillText(line, centre, curY + infoSize);
+      curY += infoSize + lineGap;
+    });
+
+    const imgs = slots(), rx = rxSlots();
+    for (let i = 0; mode > i; i++) {
+      const col = i % cols, row = Math.floor(i / cols);
+      const x = col * cellW, y = gridStartY + row * (cellH + footerH);
+      ctx.strokeStyle = '#ccc'; ctx.strokeRect(x, y, cellW, cellH);
+      if (imgs[i]) {
+        // Pixel-exact upscale: every native pixel becomes an out x out block,
+        // so the frame looks sharp and the Decomposer can recover it losslessly.
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(imgs[i], x, y, cellW, cellH);
+        ctx.imageSmoothingEnabled = true;
+      }
+      else {
+        ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.fillRect(x, y, cellW, cellH);
+        ctx.fillStyle = '#000'; ctx.font = `bold ${36 * S}px Inter`; ctx.textAlign = 'center';
+        ctx.fillText('No image', x + cellW / 2, y + cellH / 2);
+      }
+      ctx.fillStyle = textColor;
+      ctx.textAlign = 'center';
+      const label = (opts.showRx && imgs[i] && rx[i]) ? `${i + 1}/${mode}  \u00B7  ${fmtRxUtc(rx[i])}` : `${i + 1}/${mode}`;
+      fitFont(ctx, label, 'bold ', 30 * S, cellW - 10 * S);
+      ctx.fillText(label, x + cellW / 2, y + cellH + footerH / 2 + 10 * S);
+    }
+
+    const dipX = cellW * cols + gap;
+    if (diplomaImg) ctx.drawImage(diplomaImg, dipX, gridStartY, dipW, dipH);
+
+    const meta = {
+      app: 'ariss-sstv-mosaic', v: APP_VERSION, fmt: currentFormat, n: mode, cols, rows,
+      // All positions in output pixels; nw/nh = native frame size to restore.
+      cw: cellW * R, ch: cellH * R, fh: footerH * R, gx: 0, gy: gridStartY * R,
+      nw: cellW, nh: cellH, scale: R,
+      dip: diplomaImg ? [dipX * R, gridStartY * R, dipW * R, dipH * R] : null
+    };
+    return { canvas, meta };
+  }
+
+  /* Vertical 1080x1920 version for stories (not meant for the Decomposer). */
+  async function renderStory() {
+    const W = 1080, H = 1920, M = 64;
+    const fmt = FORMATS[currentFormat], mode = currentMode;
+    const [, expLogo, aLogo, bgImg] = await Promise.all([fontsReady(), whenReady(expeditionLogo), whenReady(arissLogo), backgroundImage()]);
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high';
+    paintBackground(ctx, W, H, bgImg);
+    const dark = selectedBg.type !== 'white';
+    // Soft vignette for legibility
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, dark ? 'rgba(0,0,0,.45)' : 'rgba(255,255,255,.2)');
+    g.addColorStop(.5, 'rgba(0,0,0,0)');
+    g.addColorStop(1, dark ? 'rgba(0,0,0,.55)' : 'rgba(255,255,255,.2)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    const fg = dark ? '#fff' : '#000';
+
+    let y = 90;
+    const logos = [expLogo, aLogo].filter(Boolean);
+    const L = 150, lgap = 28;
+    const lw = logos.reduce((s, l) => s + L * l.naturalWidth / l.naturalHeight, 0) + lgap * (logos.length - 1);
+    let lx = (W - lw) / 2;
+    logos.forEach(l => { const w = L * l.naturalWidth / l.naturalHeight; ctx.drawImage(l, lx, y, w, L); lx += w + lgap; });
+    y += L + 80;
+
+    ctx.textAlign = 'center'; ctx.fillStyle = fg;
+    fitFont(ctx, EVENT_TITLE, 'bold ', 76, W - 2 * M); ctx.fillText(EVENT_TITLE, W / 2, y);
+    y += 62;
+    fitFont(ctx, EVENT_SUBTITLE, '', 46, W - 2 * M); ctx.fillText(EVENT_SUBTITLE, W / 2, y);
+    y += 60;
+
+    const cols = mode === 6 ? 2 : 3, rows = Math.ceil(mode / cols), tg = 16;
+    const tw = (W - 2 * M - (cols - 1) * tg) / cols, th = tw * fmt.h / fmt.w;
+    const imgs = slots();
+    for (let i = 0; mode > i; i++) {
+      const x = M + (i % cols) * (tw + tg), ty = y + Math.floor(i / cols) * (th + tg);
+      ctx.save();
+      roundRect(ctx, x, ty, tw, th, 18); ctx.clip();
+      if (imgs[i]) ctx.drawImage(imgs[i], x, ty, tw, th);
+      else { ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(x, ty, tw, th); }
+      ctx.restore();
+      ctx.save();
+      ctx.fillStyle = 'rgba(0,0,0,.55)'; roundRect(ctx, x + 10, ty + th - 44, 72, 34, 17); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 20px Inter'; ctx.textAlign = 'center';
+      ctx.fillText(`${i + 1}/${mode}`, x + 46, ty + th - 20);
+      ctx.restore();
+    }
+    y += rows * (th + tg) + 60;
+
+    const count = imgs.filter(Boolean).length;
+    ctx.fillStyle = fg; ctx.textAlign = 'center';
+    const who = nameInput.value.trim() + (callsignInput.value.trim() ? ` \u00B7 ${callsignInput.value.trim().toUpperCase()}` : '');
+    fitFont(ctx, who, 'bold ', 52, W - 2 * M); ctx.fillText(who, W / 2, y);
+    y += 54;
+    ctx.font = '36px Inter'; ctx.fillText(locatorInput.value.trim(), W / 2, y);
+    y += 70;
+    // Progress pill
+    const pill = count === mode ? `\u2713  Complete set \u00B7 ${count}/${mode} images` : `${count}/${mode} images received`;
+    ctx.font = '600 32px Inter';
+    const pw = ctx.measureText(pill).width + 64;
+    ctx.fillStyle = '#0F6CAF'; roundRect(ctx, (W - pw) / 2, y - 44, pw, 64, 32); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillText(pill, W / 2, y);
+
+    ctx.fillStyle = dark ? 'rgba(255,255,255,.75)' : 'rgba(0,0,0,.5)';
+    ctx.font = '30px Inter'; ctx.fillText('ariss-ea.org/sstv-mosaic', W / 2, H - 70);
+    return c;
+  }
+
+  /* SWL (short-wave listener) report card for a single frame. */
+  async function renderSwlCard(i) {
+    const W = 1800, H = 1180;
+    const fmt = FORMATS[currentFormat];
+    const [, expLogo, aLogo] = await Promise.all([fontsReady(), whenReady(expeditionLogo), whenReady(arissLogo)]);
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high';
+    ctx.fillStyle = '#f9f9f9'; ctx.fillRect(0, 0, W, H);
+    // Header: white band (the blue ARISS arrow would disappear on blue) with a blue accent stripe
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, 170);
+    const stripe = ctx.createLinearGradient(0, 0, W, 0);
+    stripe.addColorStop(0, '#0F6CAF'); stripe.addColorStop(1, '#17a2b8');
+    ctx.fillStyle = stripe; ctx.fillRect(0, 170, W, 10);
+    let lx = 40;
+    [expLogo, aLogo].filter(Boolean).forEach(l => { const w = 120 * l.naturalWidth / l.naturalHeight; ctx.drawImage(l, lx, 25, w, 120); lx += w + 24; });
+    ctx.fillStyle = '#0F6CAF'; ctx.textAlign = 'left';
+    ctx.font = 'bold 60px Inter'; ctx.fillText('SWL REPORT', lx + 20, 100);
+    ctx.font = '30px Inter'; ctx.fillStyle = '#555';
+    ctx.fillText('Reception of an SSTV image from the International Space Station', lx + 20, 142);
+
+    // Frame
+    const iw = 1040, ih = iw * fmt.h / fmt.w, ix = 60, iy = 230;
+    ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.18)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 8;
+    ctx.fillStyle = '#fff'; roundRect(ctx, ix - 14, iy - 14, iw + 28, ih + 28, 22); ctx.fill(); ctx.restore();
+    ctx.save(); roundRect(ctx, ix, iy, iw, ih, 12); ctx.clip(); ctx.drawImage(slots()[i], ix, iy, iw, ih); ctx.restore();
+
+    // Details
+    const rx = rxSlots()[i];
+    const callsign = callsignInput.value.trim().toUpperCase();
+    const rows = [
+      ['From', 'ISS \u00B7 RS0ISS'],
+      ['Event', EVENT_TITLE],
+      ['Image', `${i + 1} of ${currentMode}`],
+      ['Received', rx ? fmtRxUtc(rx) : '\u2014'],
+      ['Frequency', DOWNLINK],
+      ['Mode', `SSTV ${fmt.label}`],
+      ['Station', (nameInput.value.trim() || '\u2014') + (callsign ? ` \u00B7 ${callsign}` : '')],
+      ['Grid square', locatorInput.value.trim() || '\u2014']
+    ];
+    const tx = ix + iw + 70;
+    let ty = iy + 20;
+    rows.forEach(([k, v]) => {
+      ctx.fillStyle = '#888'; ctx.font = '500 24px Inter'; ctx.fillText(k.toUpperCase(), tx, ty);
+      ctx.fillStyle = '#333'; fitFont(ctx, v, '600 ', 36, W - tx - 50); ctx.fillText(v, tx, ty + 42);
+      ty += 98;
+    });
+    ctx.fillStyle = '#0F6CAF'; ctx.font = 'bold 44px Inter';
+    ctx.fillText('73!', tx, ty + 10);
+
+    ctx.fillStyle = '#888'; ctx.font = '26px Inter'; ctx.textAlign = 'left';
+    ctx.fillText('Thank you ARISS for the SSTV transmission.', ix, H - 60);
+    ctx.textAlign = 'right'; ctx.fillText('ariss-ea.org/sstv-mosaic', W - 50, H - 60);
+    return c;
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+
+  async function addJpegComment(blob, text) {
+    const bytes = new Uint8Array(await blob.arrayBuffer());
+    if (bytes[0] !== 0xFF || bytes[1] !== 0xD8) return blob;
+    let pos = 2;
+    if (bytes[2] === 0xFF && bytes[3] === 0xE0) pos = 4 + bytes[4] * 256 + bytes[5];
+    const payload = new TextEncoder().encode(text);
+    const len = payload.length + 2;
+    if (len > 0xFFFF) return blob;
+    const seg = new Uint8Array(4 + payload.length);
+    seg.set([0xFF, 0xFE, len >> 8, len & 0xFF]); seg.set(payload, 4);
+    return new Blob([bytes.slice(0, pos), seg, bytes.slice(pos)], { type: 'image/jpeg' });
+  }
+
+  async function mosaicBlob() {
+    const { canvas, meta } = await renderMosaic();
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 1.0));
+    if (!blob) throw new Error('toBlob failed');
+    return addJpegComment(blob, 'ARISS-SSTV-MOSAIC:' + JSON.stringify(meta));
+  }
+
+  function download(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = filename;
+    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+  const canShareFiles = (() => {
+    try { return !!(navigator.canShare && navigator.canShare({ files: [new File([''], 'x.jpg', { type: 'image/jpeg' })] })); }
+    catch (e) { return false; }
+  })();
+  async function share(blob, filename) {
+    const file = new File([blob], filename, { type: 'image/jpeg' });
+    try {
+      await navigator.share({ files: [file], title: EVENT_TITLE, text: `My ${EVENT_TITLE} SSTV mosaic \u2014 ariss-ea.org/sstv-mosaic` });
+      return true;
+    } catch (e) {
+      return e && e.name === 'AbortError';   // user cancelled: don't fall back to download
+    }
+  }
+  /* Story / SWL card: share sheet on phones, download elsewhere. */
+  async function deliver(blob, filename) {
+    // Phones: the share sheet is the natural way to post a Story. Computers
+    // (Windows can share files too): a download is what people expect.
+    const onPhone = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+    if (canShareFiles && onPhone && await share(blob, filename)) return;
+    download(blob, filename);
+  }
+
+  function validateFields() {
+    if (!nameInput.value.trim() || !locatorInput.value.trim()) {
+      alert('Please fill in Name and Grid Square before saving.');
+      return false;
+    }
+    return true;
+  }
+  async function withBusy(btn, label, fn) {
+    const old = btn.textContent;
+    btn.disabled = true; btn.textContent = label;
+    try { await ready; await fn(); }
+    catch (e) { console.error(e); alert('Sorry, the image could not be generated. Please try again or pick another background.'); }
+    finally { btn.disabled = false; btn.textContent = old; }
+  }
+
+  const saveBtn = $('#save-btn'), shareBtn = $('#share-btn'), storyBtn = $('#story-btn');
+  if (canShareFiles) shareBtn.style.display = 'inline-block';
+  saveBtn.addEventListener('click', () => {
+    if (!validateFields()) return;
+    withBusy(saveBtn, 'Generating\u2026', async () => {
+      download(await mosaicBlob(), 'sstv_mosaic.jpg');
+      toast('Mosaic saved. For the official certificate, upload your images to the ARISS SSTV Gallery.', 7000);
+    });
+  });
+  shareBtn.addEventListener('click', () => {
+    if (!validateFields()) return;
+    withBusy(shareBtn, 'Preparing\u2026', async () => {
+      const blob = await mosaicBlob();
+      if (!await share(blob, 'sstv_mosaic.jpg')) download(blob, 'sstv_mosaic.jpg');
+    });
+  });
+  storyBtn.addEventListener('click', () => {
+    if (!validateFields()) return;
+    withBusy(storyBtn, 'Generating\u2026', async () => {
+      const c = await renderStory();
+      deliver(await new Promise(res => c.toBlob(res, 'image/jpeg', 0.95)), 'sstv_mosaic_story.jpg');
     });
   });
 
-  // Upload your own background + preview replace
-  const bgUploadInput = document.getElementById('bg-upload-input');
-  bgUploadInput.addEventListener('change', () => {
-    const file = bgUploadInput.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        selectedBg = { type:'upload', img };
-        bgOptions.forEach(o => o.classList.remove('selected'));
-        const uploadOpt = document.querySelector('.bg-option[data-type="upload"]');
-        uploadOpt.classList.add('selected');
-        // replace preview icon with the uploaded image
-        const previewImg = uploadOpt.querySelector('img.upload-icon');
-        previewImg.src = img.src;
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
+  /* ================================================================
+     LIVE PREVIEW
+     ================================================================ */
+  const previewFrame = $('#preview-frame');
+  let previewBusy = false, previewAgain = false;
+  async function updatePreview() {
+    if (previewBusy) { previewAgain = true; return; }
+    previewBusy = true;
+    try {
+      await ready;
+      const { canvas } = await renderMosaic({ preview: true });
+      // Downscale for display so the page stays light.
+      const maxW = 1400, s = Math.min(1, maxW / canvas.width);
+      const view = document.createElement('canvas');
+      view.width = Math.round(canvas.width * s); view.height = Math.round(canvas.height * s);
+      const v = view.getContext('2d'); v.imageSmoothingQuality = 'high';
+      v.drawImage(canvas, 0, 0, view.width, view.height);
+      const old = previewFrame.querySelector('canvas');
+      if (old) old.replaceWith(view); else previewFrame.insertBefore(view, previewFrame.firstChild);
+      const out = FORMATS[currentFormat].out || 1;   // size of the real export
+      $('#preview-tag').textContent = `${canvas.width * out}\u00D7${canvas.height * out}`;
+    } catch (e) { console.warn('Preview failed', e); }
+    previewBusy = false;
+    if (previewAgain) { previewAgain = false; updatePreview(); }
+  }
 
-  // Save mosaic with canvas
-  document.getElementById('save-btn').addEventListener('click', () => {
-    // Validate inputs
-    const name = document.getElementById('name-input').value.trim();
-    const locator = document.getElementById('locator-input').value.trim();
-    if (!name || !locator) {
-      alert('Please fill in Name and Grid Square before saving.');
+  const optRx = $('#opt-rx'), optSeal = $('#opt-seal');
+  optRx.addEventListener('change', () => { opts.showRx = optRx.checked; saveLS(LS.optsKey, opts); changed({ silent: true }); });
+  optSeal.addEventListener('change', () => { opts.seal = optSeal.checked; saveLS(LS.optsKey, opts); changed({ silent: true }); });
+
+  /* ================================================================
+     EVENT BANNER
+     ================================================================ */
+  function updateEventBanner() {
+    const banner = $('#event-banner');
+    const start = EVENT_START ? new Date(EVENT_START) : null, end = EVENT_END ? new Date(EVENT_END) : null;
+    if (!start || !end || isNaN(start) || isNaN(end)) { banner.style.display = 'none'; return; }
+    const now = Date.now(), dot = $('#event-dot'), txt = $('#event-text');
+    banner.style.display = 'inline-flex';
+    if (start > now) { dot.classList.add('idle'); txt.textContent = `Transmissions start in ${fmtDuration(start - now)}`; }
+    else if (end > now) { dot.classList.remove('idle'); txt.textContent = `Live now on ${DOWNLINK} \u00B7 ends in ${fmtDuration(end - now)}`; }
+    else { dot.classList.add('idle'); txt.textContent = 'This event has ended. Thanks for listening, 73!'; }
+  }
+
+  /* ================================================================
+     ISS PASS PREDICTION (satellite.js + ARISS-EA cached TLE, all in-browser)
+     ================================================================ */
+  const issSub = $('#iss-sub'), issBody = $('#iss-body');
+  let passes = [], selectedPass = 0, satrec = null, observer = null, issTimer = null, satLoading = null;
+  $('#freq-pill').textContent = `Listen on ${DOWNLINK} \u00B1 Doppler` + (SCHEDULE ? ` \u00B7 ${SCHEDULE}` : '');
+
+  function loadSatelliteJs() {
+    if (window.satellite) return Promise.resolve();
+    if (!satLoading) {
+      satLoading = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = SATELLITE_JS_URL; s.async = true;
+        s.onload = resolve; s.onerror = () => { satLoading = null; reject(new Error('satellite.js')); };
+        document.head.appendChild(s);
+      });
+    }
+    return satLoading;
+  }
+  async function getTle() {
+    const cached = loadLS(LS.tleKey, null);
+    if (cached && 6 * 3600e3 > Date.now() - cached.t) return cached.lines;
+    for (const src of TLE_SOURCES) {
+      try {
+        const r = await fetch(src.url, { cache: 'no-store' });
+        if (!r.ok) continue;
+        const lines = src.parse(await r.text());
+        if (lines[0] && lines[0].startsWith('1 ') && lines[1] && lines[1].startsWith('2 ')) {
+          try { localStorage.setItem(LS.tleKey, JSON.stringify({ t: Date.now(), lines })); } catch (e) {}
+          return lines;
+        }
+      } catch (e) { /* try the next source */ }
+    }
+    return cached ? cached.lines : null;   // stale TLE is still fine for a few days
+  }
+
+  const rad = d => d * Math.PI / 180, deg = r => r * 180 / Math.PI;
+  function lookAt(date) {
+    const pv = satellite.propagate(satrec, date);
+    if (!pv || !pv.position) return null;
+    const gmst = satellite.gstime(date);
+    const la = satellite.ecfToLookAngles(observer, satellite.eciToEcf(pv.position, gmst));
+    const geo = satellite.eciToGeodetic(pv.position, gmst);
+    return { az: (deg(la.azimuth) + 360) % 360, el: deg(la.elevation), lat: deg(geo.latitude), lon: deg(geo.longitude), alt: geo.height };
+  }
+  function computePasses(from, hours) {
+    const out = [], step = 20e3, endT = from + hours * 3600e3;
+    let inPass = false, cur = null, prevT = from;
+    const edge = (t0, t1, rising) => {   // bisect the horizon crossing to ~1 s
+      let a = t0, b = t1;
+      while (b - a > 1000) { const m = (a + b) / 2; const up = lookAt(new Date(m)).el > 0; if (up === rising) b = m; else a = m; }
+      return b;
+    };
+    for (let t = from; endT >= t; t += step) {
+      const p = lookAt(new Date(t)); if (!p) continue;
+      if (p.el > 0 && !inPass) {
+        inPass = true;
+        cur = { aos: t === from ? t : edge(prevT, t, true), maxEl: p.el, maxT: t, track: [] };
+      }
+      if (inPass) {
+        cur.track.push({ az: p.az, el: p.el });
+        if (p.el > cur.maxEl) { cur.maxEl = p.el; cur.maxT = t; }
+        if (0 >= p.el) { cur.los = edge(prevT, t, false); out.push(cur); inPass = false; }
+      }
+      prevT = t;
+    }
+    if (inPass) { cur.los = endT; out.push(cur); }
+    return out;
+  }
+
+  function quality(el) {
+    if (el >= 40) return ['q-great', 'Excellent'];
+    if (el >= 20) return ['q-good', 'Good'];
+    return ['q-low', 'Low'];
+  }
+
+  function drawPolar() {
+    const cv = $('#polar'), ctx = cv.getContext('2d');
+    const W = cv.width, R = W / 2 - 40, cx = W / 2, cy = W / 2;
+    ctx.clearRect(0, 0, W, W);
+    ctx.strokeStyle = '#d9d9d9'; ctx.lineWidth = 2; ctx.fillStyle = '#888';
+    ctx.font = '22px Inter'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    [0, 30, 60].forEach(el => { ctx.beginPath(); ctx.arc(cx, cy, R * (90 - el) / 90, 0, Math.PI * 2); ctx.stroke(); });
+    ctx.beginPath(); ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy); ctx.moveTo(cx, cy - R); ctx.lineTo(cx, cy + R); ctx.stroke();
+    [['N', 0], ['E', 90], ['S', 180], ['W', 270]].forEach(([l, a]) => {
+      ctx.fillText(l, cx + (R + 22) * Math.sin(rad(a)), cy - (R + 22) * Math.cos(rad(a)));
+    });
+    ctx.font = '16px Inter'; ctx.fillStyle = '#aaa';
+    ctx.fillText('30\u00B0', cx + 6, cy - R * 60 / 90 - 10); ctx.fillText('60\u00B0', cx + 6, cy - R * 30 / 90 - 10);
+
+    const p = passes[selectedPass]; if (!p) return;
+    const xy = (az, el) => { const r = R * (90 - Math.max(0, el)) / 90; return [cx + r * Math.sin(rad(az)), cy - r * Math.cos(rad(az))]; };
+    ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const grad = ctx.createLinearGradient(...xy(p.track[0].az, 0), ...xy(p.track[p.track.length - 1].az, 0));
+    grad.addColorStop(0, '#17a2b8'); grad.addColorStop(1, '#0F6CAF');
+    ctx.strokeStyle = grad;
+    ctx.beginPath();
+    p.track.forEach((pt, i) => { const [x, y] = xy(pt.az, pt.el); if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); });
+    ctx.stroke();
+    const [ax, ay] = xy(p.track[0].az, 0);
+    ctx.fillStyle = '#17a2b8'; ctx.beginPath(); ctx.arc(ax, ay, 9, 0, Math.PI * 2); ctx.fill();
+    const last = p.track[p.track.length - 1]; const [lx2, ly2] = xy(last.az, 0);
+    ctx.fillStyle = '#0F6CAF'; ctx.beginPath(); ctx.arc(lx2, ly2, 9, 0, Math.PI * 2); ctx.fill();
+    const now = Date.now();
+    if (now >= p.aos && p.los >= now) {
+      const s = lookAt(new Date(now));
+      if (s && s.el > 0) {
+        const [sx, sy] = xy(s.az, s.el);
+        ctx.fillStyle = 'rgba(220,53,69,.25)'; ctx.beginPath(); ctx.arc(sx, sy, 22, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#dc3545'; ctx.beginPath(); ctx.arc(sx, sy, 11, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    const dt = new Date(p.aos);
+    $('#polar-caption').textContent =
+      `${dt.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' })} \u00B7 ` +
+      `rises ${Math.round(p.track[0].az)}\u00B0, peaks ${Math.round(p.maxEl)}\u00B0, sets ${Math.round(last.az)}\u00B0`;
+  }
+
+  function renderPassRows() {
+    const tbody = $('#pass-rows'); tbody.innerHTML = '';
+    passes.slice(0, 8).forEach((p, i) => {
+      const tr = document.createElement('tr');
+      if (i === selectedPass) tr.className = 'sel';
+      const d = new Date(p.aos), [qc, ql] = quality(p.maxEl);
+      const cells = [
+        d.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' }),
+        d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        `${Math.round(p.maxEl)}\u00B0`,
+        `${Math.max(1, Math.round((p.los - p.aos) / 60000))} min`
+      ];
+      cells.forEach(t => { const td = document.createElement('td'); td.textContent = t; tr.appendChild(td); });
+      const q = document.createElement('td'); q.innerHTML = `<span class="q ${qc}"></span>`; q.firstChild.textContent = ql; tr.appendChild(q);
+      tr.addEventListener('click', () => { selectedPass = i; renderPassRows(); drawPolar(); });
+      tbody.appendChild(tr);
+    });
+  }
+
+  function tickIss() {
+    if (!satrec) return;
+    const now = Date.now();
+    // Drop finished passes and recompute when running low (at most every 10 min).
+    while (passes.length && now > passes[0].los) { passes.shift(); selectedPass = Math.max(0, selectedPass - 1); renderPassRows(); }
+    if (4 > passes.length && now - lastPassCompute > 600e3) { updateIss(true); return; }
+    if (!passes.length) return;
+    const p = passes[0];
+    const cd = $('#countdown'), label = $('#countdown-label');
+    if (now >= p.aos) {
+      const s = lookAt(new Date(now));
+      label.textContent = 'The ISS is above your horizon now!';
+      cd.classList.add('overhead');
+      cd.textContent = s ? `El ${Math.round(s.el)}\u00B0 \u00B7 Az ${Math.round(s.az)}\u00B0` : 'Overhead';
+    } else {
+      label.textContent = 'Next pass in';
+      cd.classList.remove('overhead');
+      cd.textContent = fmtDuration(p.aos - now);
+    }
+    const s = lookAt(new Date(now));
+    if (s) $('#iss-live').textContent = `ISS now at ${Math.abs(s.lat).toFixed(1)}\u00B0${s.lat >= 0 ? 'N' : 'S'}, ${Math.abs(s.lon).toFixed(1)}\u00B0${s.lon >= 0 ? 'E' : 'W'} \u00B7 ${Math.round(s.alt)} km high`;
+    if (selectedPass === 0 && now >= p.aos) drawPolar();
+  }
+
+  let issKey = '', lastPassCompute = 0;
+  async function updateIss(force) {
+    const pos = locatorToLatLon(locatorInput.value);
+    if (!pos) {
+      issBody.style.display = 'none';
+      issSub.textContent = locatorInput.value.trim()
+        ? 'That Grid Square does not look valid (e.g. IN80dk). Fix it to see the next ISS passes.'
+        : 'Enter your Grid Square above to see the next ISS passes over your station.';
+      issKey = '';
       return;
     }
-    const callsign = document.getElementById('callsign-input').value.trim();
-
-    // Layout constants
-    const cellW=640, cellH=496, footerH=30, cols=4, rows=3;
-    const titleSize=72, subtitleSize=48, infoSize=42, pad=20, between=10;
-    const infoLines=[ name + (callsign?` (${callsign})`:''), locator ];
-    const infoHeight=infoLines.length*infoSize + (infoLines.length-1)*4;
-    const titleY=pad+titleSize;
-    const subtitleY=titleY+between+subtitleSize;
-    const infoStartY=subtitleY+between;
-    const gridStartY=infoStartY+infoHeight+pad;
-    const gridH=(cellH+footerH)*rows;
-    let dipW=0, dipH=0, gap=0;
-    if (diplomaImg) {
-      const scale = gridH / diplomaImg.height;
-      dipW = diplomaImg.width*scale;
-      dipH = gridH;
-      gap = 40;
-    }
-    const canvasW = cellW*cols + dipW + gap;
-    const canvasH = gridStartY + gridH;
-    const canvas = document.getElementById('canvas');
-    canvas.width = canvasW;
-    canvas.height = canvasH;
-    const ctx = canvas.getContext('2d');
-
-    // Draw background
-    if (selectedBg.type === 'white') {
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0,0,canvasW,canvasH);
-    } else if (selectedBg.type === 'black') {
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0,0,canvasW,canvasH);
-    } else {
-      const bgImg = selectedBg.type === 'upload'
-                  ? selectedBg.img
-                  : defaultBgImgs[selectedBg.type];
-      const scale = Math.max(canvasW/bgImg.width, canvasH/bgImg.height);
-      const bw = bgImg.width*scale, bh = bgImg.height*scale;
-      const bx = (canvasW - bw)/2, by = (canvasH - bh)/2;
-      ctx.drawImage(bgImg, bx, by, bw, bh);
-      if (selectedBg.type === 'upload') {
-        ctx.fillStyle='rgba(0,0,0,0.3)';
-        ctx.fillRect(0,0,canvasW,canvasH);
+    const key = locatorInput.value.trim().toUpperCase();
+    if (!force && key === issKey && passes.length >= 4) return;
+    issKey = key;
+    issSub.textContent = 'Calculating passes for your station\u2026';
+    try {
+      const [, tle] = await Promise.all([loadSatelliteJs(), getTle()]);
+      if (!tle) throw new Error('No TLE');
+      satrec = satellite.twoline2satrec(tle[0], tle[1]);
+      observer = { latitude: rad(pos.lat), longitude: rad(pos.lon), height: 0.1 };
+      // Grazing passes (below 5 degrees) are not worth listening to.
+      passes = computePasses(Date.now() - 10 * 60e3, 72).filter(p => p.los > Date.now() && p.maxEl >= 5);
+      lastPassCompute = Date.now();
+      selectedPass = 0;
+      clearInterval(issTimer);
+      if (!passes.length) {
+        issSub.textContent = `The ISS does not rise high enough over ${key} in the next 3 days.`;
+        issBody.style.display = 'none';
+        return;
       }
+      issSub.textContent = `Next ISS passes over ${key} (${pos.lat.toFixed(2)}\u00B0, ${pos.lon.toFixed(2)}\u00B0). Click a pass to see its path across your sky.`;
+      issBody.style.display = '';
+      renderPassRows(); drawPolar(); tickIss();
+      clearInterval(issTimer); issTimer = setInterval(tickIss, 1000);
+    } catch (e) {
+      console.warn(e);
+      issSub.textContent = 'Could not load ISS orbit data right now. Check your connection and try again later.';
+      issBody.style.display = 'none';
     }
+  }
+  let locTimer = null;
+  locatorInput.addEventListener('input', () => { clearTimeout(locTimer); locTimer = setTimeout(() => updateIss(false), 600); });
 
-    // Draw ISS Expedition logo top-left (larger, no border/background)
-    if (expeditionLogo.complete) {
-      const logoMargin = 20;
-      const logoWidth = 200;  // increased from 120
-      const logoHeight = expeditionLogo.height * (logoWidth / expeditionLogo.width);
-      ctx.drawImage(expeditionLogo, logoMargin, logoMargin, logoWidth, logoHeight);
-    }
-
-    // Watermark
-    ctx.font = '50px Inter';
-    ctx.fillStyle = (selectedBg.type==='white'?'rgba(0,0,0,0.3)':'rgba(255,255,255,0.7)');
-    ctx.textAlign = 'right';
-    ctx.fillText('ariss-ea.org/sstv-mosaic', canvasW-10,60);
-
-    // Title & subtitle
-    ctx.textAlign = 'center';
-    ctx.font = `bold ${titleSize}px Inter`;
-    ctx.fillStyle = (selectedBg.type==='white'?'#000':'#fff');
-    ctx.fillText(document.getElementById('main-title').textContent, canvasW/2, titleY);
-    ctx.font = `${subtitleSize}px Inter`;
-    ctx.fillText(document.getElementById('subtitle').textContent, canvasW/2, subtitleY);
-
-    // Personal info (black on white bg, white otherwise)
-    ctx.font = `bold ${infoSize}px Inter`;
-    ctx.fillStyle = (selectedBg.type==='white'?'#000':'#fff');
-    let curY = infoStartY;
-    infoLines.forEach(line=>{
-      ctx.fillText(line, canvasW/2, curY+infoSize);
-      curY += infoSize+4;
-    });
-
-    // Draw grid & placeholders
-    for(let i=0;i<TOTAL_SLOTS;i++){
-      const col = i%cols, row = Math.floor(i/cols);
-      const x = col*cellW, y = gridStartY + row*(cellH+footerH);
-      ctx.strokeStyle='#ccc';
-      ctx.strokeRect(x,y,cellW,cellH);
-
-      if (imagesArray[i]) {
-        ctx.drawImage(imagesArray[i], x, y, cellW, cellH);
-      } else {
-        ctx.fillStyle='rgba(255,255,255,0.5)';
-        ctx.fillRect(x, y, cellW, cellH);
-        ctx.fillStyle='#000';
-        ctx.font='bold 36px Inter';
-        ctx.textAlign='center';
-        ctx.fillText('No image', x+cellW/2, y+cellH/2);
-      }
-      // slot numbers bold & dynamic color
-      ctx.fillStyle = (selectedBg.type==='white'?'#000':'#fff');
-      ctx.font='bold 30px Inter';
-      ctx.fillText(`${i+1}/${TOTAL_SLOTS}`, x+cellW/2, y+cellH+footerH/2+10);
-    }
-
-    // Draw diploma if present
-    if (diplomaImg) {
-      ctx.drawImage(diplomaImg, cellW*cols+gap, gridStartY, dipW, dipH);
-    }
-
-    // Export JPG
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/jpeg',1.0);
-    link.download = 'sstv_mosaic.jpg';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  /* ================================================================
+     MODALS
+     ================================================================ */
+  function bindModal(modal, openers, closers) {
+    openers.forEach(b => b.addEventListener('click', () => { modal.style.display = 'flex'; }));
+    closers.forEach(b => b.addEventListener('click', () => { modal.style.display = 'none'; }));
+    modal.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') $$('.modal').forEach(m => { m.style.display = 'none'; });
   });
 
-  // Help modal behavior
-  const helpModal=document.getElementById('help-modal');
-  document.getElementById('howto-btn').addEventListener('click',()=>helpModal.style.display='flex');
-  document.getElementById('help-close').addEventListener('click',()=>helpModal.style.display='none');
-  window.addEventListener('click', e => { if (e.target === helpModal) helpModal.style.display = 'none'; });
+  bindModal($('#help-modal'), [$('#howto-btn')], [$('#help-close')]);
+  bindModal(frameModal, [], [$('#frame-close')]);
+
+  const settingsModal = $('#settings-modal');
+  const persistToggle = $('#persist-toggle');
+  bindModal(settingsModal, [$('#settings-btn'), $('#mode-info')], [$('#settings-close')]);
+  [$('#settings-btn'), $('#mode-info')].forEach(b => b.addEventListener('click', () => {
+    persistToggle.checked = persistEnabled();
+    updateModeInfo();
+  }));
+  $$('#settings-modal .mode-btn[data-format]').forEach(b => b.addEventListener('click', () => {
+    setOverride({ format: b.dataset.format });
+  }));
+  $$('#settings-modal .mode-btn[data-mode]').forEach(b => b.addEventListener('click', () => {
+    setOverride({ mode: Number(b.dataset.mode) });
+  }));
+  $('#settings-reset').addEventListener('click', () => {
+    removeLS(LS.settingsKey);
+    applyModeAndFormat(DEFAULT_SSTV_FORMAT, DEFAULT_MOSAIC_MODE);
+  });
+  persistToggle.addEventListener('change', () => {
+    if (persistToggle.checked) {
+      try { localStorage.setItem(LS.enabledKey, '1'); } catch (e) {}
+      persistAll();
+    } else {
+      try { localStorage.setItem(LS.enabledKey, '0'); } catch (e) {}
+    }
+  });
+
+  const clearModal = $('#clear-modal');
+  bindModal(clearModal, [$('#clear-all-btn')], [$('#clear-close'), $('#clear-cancel')]);
+  $('#clear-confirm').addEventListener('click', () => {
+    [LS.legacyModeKey, LS.fieldsKey, LS.bgKey, LS.badgesKey, ...ALL_BIG_KEYS, ...ALL_RX_KEYS].forEach(removeLS);
+    ALL_BIG_KEYS.forEach(k => BigStore.del(k).catch(() => {}));
+
+    nameInput.value = ''; callsignInput.value = ''; locatorInput.value = '';
+    imageState.robot36 = emptyState(); imageState.pd120 = emptyState();
+    rxState.robot36 = emptyState(); rxState.pd120 = emptyState();
+    unlocked = new Set();
+    buildGrid();
+    diplomaImg = null; diplomaInput.value = ''; refreshDiploma();
+    selectedBg = { type: 'iss', img: null, dataUrl: null };
+    markBgSelected('iss'); setUploadPreview(null);
+    hideNotice();
+    clearModal.style.display = 'none';
+    changed({ silent: true });
+    updateIss(true);
+  });
+
+  /* ================================================================
+     INIT
+     ================================================================ */
+  updateModeInfo();
+  buildGrid();
+  refreshDiploma();
+  updateEventBanner();
+  setInterval(updateEventBanner, 1000);
+  const ready = loadPersisted()
+    .catch(e => console.error('Could not restore saved data', e))
+    .then(() => {
+      optRx.checked = opts.showRx; optSeal.checked = opts.seal;
+      updateModeInfo();
+      buildGrid();
+      refreshDiploma();
+      changed({ silent: true });
+      updateIss(true);
+    });
+})();
 </script>
