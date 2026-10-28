@@ -1,0 +1,527 @@
+<!-- === ARISS SSTV DECOMPOSER v1.7 (scoped & namespaced) === -->
+<style>
+  #ariss-sstv-decomposer {
+    --primary: #0F6CAF;
+    --primary-hover: #0c568a;
+    --secondary: #6c757d;
+    --secondary-hover: #5a6268;
+    --info: #0F6CAF;
+    --info-hover: #0c568a;
+    --danger: #dc3545;
+    --danger-hover: #c82333;
+    --radius: 16px;
+    --btn-radius: 5px;
+    --tile-ratio: 640 / 496;
+  }
+
+  /* ===== LAYOUT (SCOPED) ===== */
+  #ariss-sstv-decomposer {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #F9F9F9;
+    display: block; /* don't affect theme layout */
+  }
+
+  #ariss-sstv-decomposer #ariss-container {
+    max-width: 1200px;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  #ariss-sstv-decomposer .ariss-subtitle-small {
+    font-size: 18px;
+    color: #0F6CAF;
+    font-weight: 500;
+    margin-bottom: 2px;
+    letter-spacing: 1px;
+  }
+
+  #ariss-sstv-decomposer h1,
+  #ariss-sstv-decomposer h2 {
+    margin: 10px 0;
+    color: #333;
+    text-shadow: 1px 1px 3px rgba(0,0,0,.1);
+  }
+
+  /* ===== BUTTONS (SCOPED) ===== */
+  #ariss-sstv-decomposer .ariss-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: var(--btn-radius);
+    transition: background .2s ease;
+    margin: 10px 5px;
+    background: var(--primary);
+  }
+  #ariss-sstv-decomposer .ariss-btn-primary { background: var(--primary); }
+  #ariss-sstv-decomposer .ariss-btn-primary:hover { background: var(--primary-hover); }
+  #ariss-sstv-decomposer .ariss-btn-secondary { background: var(--secondary); }
+  #ariss-sstv-decomposer .ariss-btn-secondary:hover { background: var(--secondary-hover); }
+  #ariss-sstv-decomposer .ariss-btn-info { background: var(--info); }
+  #ariss-sstv-decomposer .ariss-btn-info:hover { background: var(--info-hover); }
+  #ariss-sstv-decomposer .ariss-btn-danger { background: var(--danger); }
+  #ariss-sstv-decomposer .ariss-btn-danger:hover { background: var(--danger-hover); }
+
+  /* ===== GRID & CELLS (SCOPED) ===== */
+  #ariss-sstv-decomposer #ariss-frames-section,
+  #ariss-sstv-decomposer #ariss-diploma-section {
+    margin-top: 20px;
+    display: none;
+  }
+
+  #ariss-sstv-decomposer #ariss-frames-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  #ariss-sstv-decomposer #ariss-grid,
+  #ariss-sstv-decomposer #ariss-diploma-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 10px auto;
+  }
+  @media (min-width: 768px) {
+    #ariss-sstv-decomposer #ariss-grid,
+    #ariss-sstv-decomposer #ariss-diploma-container {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    #ariss-sstv-decomposer #ariss-grid.ariss-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  }
+  #ariss-sstv-decomposer #ariss-grid.ariss-fmt-robot36 { --tile-ratio: 320 / 240; }
+  #ariss-sstv-decomposer #ariss-detected { font-size: 14px; color: #555; margin: 0 0 6px; text-align: left; }
+
+  #ariss-sstv-decomposer .ariss-cell {
+    background: #fff;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+    transition: transform .2s ease;
+    border-radius: 0 !important;
+  }
+  #ariss-sstv-decomposer .ariss-cell:hover { transform: scale(1.02); }
+
+  #ariss-sstv-decomposer .ariss-image-wrapper,
+  #ariss-sstv-decomposer .ariss-diploma-wrapper {
+    border-radius: 0 !important;
+  }
+
+  #ariss-sstv-decomposer .ariss-btn-info,
+  #ariss-sstv-decomposer .ariss-cell-footer .ariss-btn,
+  #ariss-sstv-decomposer #ariss-download-all-btn {
+    background: var(--info) !important;
+    color: #fff !important;
+    border: none;
+  }
+  #ariss-sstv-decomposer .ariss-btn-info:hover,
+  #ariss-sstv-decomposer .ariss-cell-footer .ariss-btn:hover,
+  #ariss-sstv-decomposer #ariss-download-all-btn:hover {
+    background: var(--info-hover) !important;
+  }
+
+  #ariss-sstv-decomposer .ariss-image-wrapper {
+    position: relative;
+    width: 100%;
+    background: #eaeaea;
+    aspect-ratio: var(--tile-ratio);
+  }
+  #ariss-sstv-decomposer .ariss-diploma-wrapper {
+    position: relative;
+    width: 100%;
+    background: #eaeaea;
+    aspect-ratio: 1654 / 2339;
+  }
+
+  @supports not (aspect-ratio: 640/496) {
+    #ariss-sstv-decomposer .ariss-image-wrapper::before {
+      content: "";
+      display: block;
+      padding-top: calc(496 / 640 * 100%);
+    }
+  }
+  @supports not (aspect-ratio: 1654/2339) {
+    #ariss-sstv-decomposer .ariss-diploma-wrapper::before {
+      content: "";
+      display: block;
+      padding-top: calc(2339 / 1654 * 100%);
+    }
+  }
+
+  #ariss-sstv-decomposer .ariss-image-wrapper img,
+  #ariss-sstv-decomposer .ariss-diploma-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #ariss-sstv-decomposer .ariss-cell-footer {
+    padding: 5px;
+    background: #f0f0f0;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    gap: 10px;
+  }
+
+  @media (max-width: 600px) {
+    #ariss-sstv-decomposer .ariss-cell-footer {
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 8px 4px;
+      min-width: 0;
+      font-size: 13px;
+    }
+    #ariss-sstv-decomposer .ariss-cell-footer span {
+      flex-basis: 100%;
+      text-align: center;
+      margin-bottom: 4px;
+      min-width: 0;
+      word-break: break-all;
+    }
+    #ariss-sstv-decomposer .ariss-cell-footer .ariss-btn {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+  }
+
+  /* ===== MODAL (SCOPED) ===== */
+  #ariss-sstv-decomposer .ariss-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    justify-content: center;
+    align-items: center;
+  }
+  #ariss-sstv-decomposer .ariss-modal-content {
+    background: #fff;
+    padding: 20px;
+    max-width: 650px;
+    width: 92%;
+    margin: auto;
+    border-radius: var(--radius);
+    position: relative;
+    text-align: left;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  #ariss-sstv-decomposer .ariss-modal-close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #999;
+  }
+  #ariss-sstv-decomposer .ariss-modal-close:hover { color: #333; }
+
+  /* ===== FOOTER LINKS ===== */
+  #ariss-sstv-decomposer #ariss-site-link {
+    display: inline-block;
+    margin-top: 30px;
+    font-size: 14px;
+    color: #007acc;
+    text-decoration: none;
+  }
+  #ariss-sstv-decomposer #ariss-site-link:hover { text-decoration: underline; }
+  #ariss-sstv-decomposer .ariss-license-text {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #666;
+  }
+</style>
+
+<div id="ariss-sstv-decomposer">
+  <div id="ariss-container">
+    <div style="text-align:center;">
+      <div class="ariss-subtitle-small">SSTV MOSAIC DECOMPOSER</div>
+      <h1 style="font-size:2.3em;margin-bottom:8px;">Extract SSTV frames and diploma from your mosaic</h1>
+      <div style="font-size:1.13em;color:#444;max-width:600px;margin:0 auto 18px;">
+        This tool splits a mosaic image created with the ARISS-EA SSTV Mosaic Generator into the original
+        <strong>6 or 12 SSTV frames</strong> (Robot36 or PD120, at their native resolution) and the diploma (if present). Download each image or the full set in one click.
+      </div>
+      <button id="ariss-help-btn" class="ariss-btn ariss-btn-info" style="margin-top:10px;">Help</button>
+    </div>
+
+    <div id="ariss-top-buttons" style="margin-bottom:18px;">
+      <button id="ariss-choose-btn" class="ariss-btn ariss-btn-info">Choose Mosaic Image</button>
+      <input type="file" id="ariss-mosaic-input" accept="image/*" style="display:none;">
+    </div>
+
+    <div id="ariss-frames-section">
+      <div id="ariss-frames-header">
+        <h2 style="text-align:left;">Images</h2>
+        <button id="ariss-download-all-btn" class="ariss-btn ariss-btn-info" style="display:none;">Download All</button>
+      </div>
+      <p id="ariss-detected"></p>
+      <div id="ariss-grid"></div>
+    </div>
+
+    <div id="ariss-diploma-section">
+      <h2 style="text-align:left;">Diploma</h2>
+      <div id="ariss-diploma-container"></div>
+    </div>
+
+    <div style="margin-top:20px;">
+      <a id="ariss-site-link" href="http://ariss-ea.org/sstv-mosaic" target="_blank">ariss-ea.org/sstv-mosaic</a>
+    </div>
+    <div class="ariss-license-text">An <strong>ARISS-EA Open Source</strong> Initiative</div>
+    <div class="ariss-license-text">Version <strong>1.7</strong> - 22/10/2026</div>
+
+    <canvas id="ariss-canvas" style="display:none;"></canvas>
+
+    <!-- HELP MODAL -->
+    <div id="ariss-help-modal" class="ariss-modal">
+      <div class="ariss-modal-content">
+        <span class="ariss-modal-close">&times;</span>
+        <h3>How to Use</h3>
+        <ol>
+          <li>Click <strong>Choose Mosaic Image</strong> and select your composite JPG.</li>
+          <li>The tool automatically detects <strong>6-image</strong> or <strong>12-image</strong> mosaics, in <strong>Robot36</strong> (320&times;240) or <strong>PD120</strong> (640&times;496), with or without diploma. Mosaics made with older versions of the generator are supported too.</li>
+          <li>Each tile shows its position as <em>1/N</em>&#x2026;<em>N/N</em>, or <strong>Diploma</strong>.</li>
+          <li>Use the <strong>Download</strong> button on a tile to save it, or <strong>Download All</strong> to get a ZIP.</li>
+        </ol>
+        <p>Need help or want to provide feedback? Visit <a href="https://ariss-ea.org/" target="_blank">ariss-ea.org</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JSZip & FileSaver -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <script>
+    (function(){
+      /* WORDPRESS NOTE: never write a bare less-than sign in this script (write
+         `b > a` instead of the opposite). When the page is saved, WordPress takes
+         it for the start of an HTML tag and turns the following && into
+         &#038;&#038;, which breaks the whole script. */
+      const chooseBtn         = document.getElementById('ariss-choose-btn');
+      const helpBtn           = document.getElementById('ariss-help-btn');
+      const helpModal         = document.getElementById('ariss-help-modal');
+      const helpClose         = helpModal.querySelector('.ariss-modal-close');
+      const mosaicInput       = document.getElementById('ariss-mosaic-input');
+      let   downloadAllBtn    = document.getElementById('ariss-download-all-btn');
+      const framesSection     = document.getElementById('ariss-frames-section');
+      const gridContainer     = document.getElementById('ariss-grid');
+      const diplomaSection    = document.getElementById('ariss-diploma-section');
+      const diplomaContainer  = document.getElementById('ariss-diploma-container');
+      const canvas            = document.getElementById('ariss-canvas');
+      const ctx               = canvas.getContext('2d');
+
+      const detectedEl        = document.getElementById('ariss-detected');
+
+      /* Layout of the ARISS SSTV Mosaic Generator (must match it).
+         PD120 is the original v1.5 geometry; Robot36 is the same layout
+         scaled by 0.5 so frames keep their native 320x240. Since generator
+         v1.7 / v2.1 the Robot36 mosaic is exported at `out` = 2x (each native
+         pixel is a 2x2 block); mosaics made before that are 1x. Both are
+         recognised, and frames are always restored to their native size. */
+      const FORMATS = {
+        robot36: { label: 'Robot36', w: 320, h: 240, scale: 0.5, out: 2 },
+        pd120:   { label: 'PD120',   w: 640, h: 496, scale: 1,   out: 1 }
+      };
+      const HEADER_H = 268;   // pad + title + gap + subtitle + gap + 2 info lines + pad, at scale 1
+      const FOOTER_H = 30, GAP = 40;
+      const META_PREFIX = 'ARISS-SSTV-MOSAIC:';
+
+      chooseBtn.addEventListener('click', () => mosaicInput.click());
+
+      helpBtn.addEventListener('click', () => helpModal.style.display = 'flex');
+      helpClose.addEventListener('click', () => helpModal.style.display = 'none');
+      window.addEventListener('click', e => { if (e.target === helpModal) helpModal.style.display = 'none'; });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') helpModal.style.display = 'none'; });
+
+      mosaicInput.addEventListener('change', async () => {
+        const file = mosaicInput.files[0];
+        if (!file) return;
+        const buffer = await file.arrayBuffer();
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          const layout = layoutFromMetadata(buffer, img) || detectLayout(img.naturalWidth, img.naturalHeight);
+          if (!layout) alert('This image does not look like a mosaic made with the ARISS SSTV Mosaic Generator.');
+          else decompose(img, layout);
+          URL.revokeObjectURL(url);
+          mosaicInput.value = '';
+        };
+        img.onerror = () => { alert('That file could not be read as an image.'); URL.revokeObjectURL(url); };
+        img.src = url;
+      });
+
+      /* v1.6+ mosaics carry their exact layout in a JPEG comment segment. */
+      function layoutFromMetadata(buffer, img) {
+        try {
+          const b = new Uint8Array(buffer);
+          if (b[0] !== 0xFF || b[1] !== 0xD8) return null;
+          let p = 2;
+          while (b.length >= p + 4 && b[p] === 0xFF) {
+            const marker = b[p + 1];
+            if (marker === 0xDA || marker === 0xD9) break;     // start of scan / end of image
+            const len = b[p + 2] * 256 + b[p + 3];
+            if (marker === 0xFE) {
+              const text = new TextDecoder().decode(b.subarray(p + 4, p + 2 + len));
+              if (text.startsWith(META_PREFIX)) {
+                const m = JSON.parse(text.slice(META_PREFIX.length));
+                // Only trust it if the image was not resized afterwards.
+                if (Math.abs(img.naturalHeight - (m.gy + m.rows * (m.ch + m.fh))) > 2) return null;
+                const f = FORMATS[m.fmt] || { label: m.fmt };
+                return {
+                  fmt: m.fmt, label: f.label, cols: m.cols, rows: m.rows, k: 1,
+                  cellW: m.cw, cellH: m.ch, footerH: m.fh, gridX: m.gx || 0, gridY: m.gy,
+                  outW: m.nw || m.cw, outH: m.nh || m.ch,
+                  dip: m.dip ? { x: m.dip[0], y: m.dip[1], w: m.dip[2], h: m.dip[3] } : null
+                };
+              }
+            }
+            p += 2 + len;
+          }
+        } catch (e) { /* fall back to detection */ }
+        return null;
+      }
+
+      /* Older mosaics (or metadata stripped by a messenger/social network):
+         recognise the layout from the image size. Also copes with mosaics
+         that were resized proportionally (k != 1). */
+      function detectLayout(W, H) {
+        let best = null;
+        Object.keys(FORMATS).forEach(fmt => {
+          const f = FORMATS[fmt];
+          Array.from(new Set([1, f.out || 1])).forEach(R => {
+          const S = f.scale * R, cw = f.w * R, ch = f.h * R;
+          [[3, 2], [4, 3]].forEach(([cols, rows]) => {
+            const footerH = FOOTER_H * S, gap = GAP * S;
+            const gridH = rows * (ch + footerH);
+            const k = H / (HEADER_H * S + gridH);
+            const gridW = cols * cw * k;
+            let dip = null, err;
+            if (Math.max(3, 0.01 * W) >= Math.abs(W - gridW)) {
+              err = Math.abs(W - gridW) / W;
+            } else {
+              const dipX = (cols * cw + gap) * k;
+              const dipW = W - dipX;
+              const ratio = dipW / (gridH * k);            // diploma width / height
+              if (0.4 > ratio || ratio > 1.6) return;      // not a plausible diploma
+              err = Math.abs(ratio - 1654 / 2339);         // diplomas are A-series portrait
+              dip = { x: dipX, y: HEADER_H * S * k, w: dipW, h: gridH * k };
+            }
+            // An unscaled match is what the generator produces, so it always wins.
+            // For resized mosaics the scale says nothing; rely on the fit instead.
+            const score = (0.003 > Math.abs(k - 1) ? 0 : 10) + err;
+            if (!best || best.score > score) {
+              best = { score, fmt, label: f.label, cols, rows, k,
+                       cellW: cw, cellH: ch, outW: f.w, outH: f.h, footerH, gridX: 0, gridY: HEADER_H * S * k, dip };
+            }
+          });
+          });
+        });
+        if (!best || Math.abs(Math.log(best.k)) > Math.log(4)) return null;
+        return best;
+      }
+
+      function decompose(img, L) {
+        const TOTAL = L.cols * L.rows;
+        const k = L.k;
+
+        framesSection.style.display  = 'block';
+        diplomaSection.style.display = 'none';
+        gridContainer.className = `ariss-cols-${L.cols} ariss-fmt-${L.fmt}`;
+        detectedEl.textContent = `Detected: ${L.label} \u00B7 ${TOTAL} images` +
+          (L.dip ? ' \u00B7 with diploma' : '') + (Math.abs(k - 1) > 0.002 ? ' (resized mosaic)' : '');
+
+        const slices = [];
+        for (let r = 0; L.rows > r; r++) {
+          for (let c = 0; L.cols > c; c++) {
+            const idx = r * L.cols + c + 1;
+            const x = (L.gridX + c * L.cellW) * k;
+            const y = L.gridY + r * (L.cellH + L.footerH) * k;
+            // Frames are always exported at the native SSTV resolution.
+            slices.push(sliceRegion(img, x, y, L.cellW * k, L.cellH * k, L.outW || L.cellW, L.outH || L.cellH, idx));
+          }
+        }
+        if (L.dip && L.dip.w > 10 && L.dip.h > 10) {
+          const w = Math.min(L.dip.w, img.naturalWidth - L.dip.x);
+          slices.push(sliceRegion(img, L.dip.x, L.dip.y, w, L.dip.h, Math.round(w), Math.round(L.dip.h), 'Diploma'));
+        }
+
+        Promise.all(slices).then(results => {
+          gridContainer.innerHTML = '';
+          diplomaContainer.innerHTML = '';
+
+          let hasDiplomaImage = false;
+
+          results.forEach(item => {
+            const { name, blob } = item;
+            const url = URL.createObjectURL(blob);
+            const isDiploma = name === 'Diploma';
+            if (isDiploma) hasDiplomaImage = true;
+
+            const cell = document.createElement('div');
+            cell.className = 'ariss-cell';
+            const wrapClass = isDiploma ? 'ariss-diploma-wrapper' : 'ariss-image-wrapper';
+            const label = isDiploma ? 'Diploma' : `${name}/${TOTAL}`;
+
+            cell.innerHTML = `
+              <div class="${wrapClass}"><img src="${url}" alt=""></div>
+              <div class="ariss-cell-footer">
+                <span>${label}</span>
+                <button class="ariss-btn ariss-btn-secondary">Download</button>
+              </div>
+            `;
+
+            cell.querySelector('button').addEventListener('click', () => {
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = isDiploma ? 'Diploma.jpg' : "Image " + name + ".jpg";
+              document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            });
+
+            if (isDiploma) diplomaContainer.appendChild(cell);
+            else gridContainer.appendChild(cell);
+          });
+
+          diplomaSection.style.display = hasDiplomaImage ? 'block' : 'none';
+
+          // Rebind Download All
+          downloadAllBtn.style.display = 'inline-block';
+          downloadAllBtn.replaceWith(downloadAllBtn.cloneNode(true));
+          downloadAllBtn = document.getElementById('ariss-download-all-btn');
+          downloadAllBtn.addEventListener('click', () => {
+            const zip = new JSZip();
+            results.forEach(item => {
+              const filename = item.name === 'Diploma' ? 'Diploma.jpg' : `Image ${item.name}.jpg`;
+              zip.file(filename, item.blob);
+            });
+            zip.generateAsync({ type: 'blob' }).then(content => saveAs(content, 'sstv_decomposed.zip'));
+          });
+        });
+      }
+
+      function sliceRegion(img, sx, sy, sw, sh, outW, outH, name) {
+        return new Promise(resolve => {
+          canvas.width = outW; canvas.height = outH;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
+          canvas.toBlob(blob => resolve({ name, blob }), 'image/jpeg', 0.95);
+        });
+      }
+    })();
+  </script>
+</div>
